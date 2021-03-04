@@ -1,3 +1,4 @@
+using JobSearchOrganizer.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +17,13 @@ namespace JobSearchOrganizer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc(options =>
+            {
+                options.EnableEndpointRouting = false;
+            }).AddRazorRuntimeCompilation()
+              .AddXmlSerializerFormatters();
+
+            services.AddSingleton<IJobRepository, MockJobRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -24,7 +32,16 @@ namespace JobSearchOrganizer
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
+
+            app.UseStaticFiles();
+            //app.UseMvcWithDefaultRoute();
+
+            app.UseMvc(routes =>
+           {
+               routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+           });
 
             app.UseRouting();
 
