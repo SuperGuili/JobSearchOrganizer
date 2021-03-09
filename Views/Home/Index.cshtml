@@ -1,21 +1,33 @@
 ﻿@model IEnumerable<Job>
+@inject IJobRepository _jobRepository
 
 @{
     ViewBag.Title = "Jobs List";
 }
 
+<br />
+<div class="form-group row">
+    <div class="col-sm-3 text-center">
+        <div class="alert alert-success alert-dismissible">            
+            <strong>Total applied jobs: @Model.Count()</strong>
+        </div>
+    </div>
+</div>
+
 <div class="card-deck">
     @foreach (var job in Model)
     {
-        <div class="card m-3">
+        var photoPath = "~/files/" + (job.FilePath ?? "microsoft.jpg");
+
+        <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
             <div class="card-header">
                 <h3>@job.Company</h3>
             </div>
-            <img class="card-img-top" src="~/images/microsoft.jpg" asp-append-version="true" height="200" width="100"/>
+            <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" height="200" width="100" />
             <div class="card-body text-center">
                 <a asp-controller="Home" asp-action="Details" asp-route-id="@job.Id" class="btn btn-primary btn-sm m-1">View</a>
-                <a href="#" class="btn btn-primary btn-sm m-1">Edit</a>
-                <a href="#" class="btn btn-danger btn-sm m-1">Delete</a>
+                <a asp-controller="Home" asp-action="Edit" asp-route-id="@job.Id" class="btn btn-primary btn-sm m-1">Edit</a>
+                <a asp-controller="Home" asp-action="Delete" asp-route-id="@job.Id" class="btn btn-danger btn-sm m-1">Delete</a>
             </div>
         </div>
     }

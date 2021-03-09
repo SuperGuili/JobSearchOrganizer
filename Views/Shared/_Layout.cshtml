@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿
+@inject SignInManager<ApplicationUser> signInManager;
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -7,6 +10,8 @@
     <environment include="Development">
         <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
         <script src="~/lib/jquery/jquery.js"></script>
+        <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/bootstrap/js/bootstrap.js"></script>
     </environment>
 
@@ -34,7 +39,7 @@
 
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Welcome">
                 <img src="~/images/job-icon.png" height="40" width="40" />
             </a>
 
@@ -44,13 +49,54 @@
 
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a asp-controller="Home" asp-action="Index" class="nav-link">List</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-controller="Home" asp-action="Create" class="nav-link">Create</a>
-                    </li>
+
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Index" class="nav-link">List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Create" class="nav-link">Create</a>
+                        </li>
+                    }
+
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a asp-controller="Administration" asp-action="ListRoles" class="dropdown-item">Manage Roles</a>
+                                <a asp-controller="Administration" asp-action="ListUsers" class="dropdown-item">Manage Users</a>
+                            </div>
+                        </li>
+                    }
                 </ul>
+
+                <ul class="navbar-nav ml-auto">
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <form method="post" asp-controller="Account" asp-action="LogOut">
+                                <button type="submit" class="nav-link btn btn-link py-0" style="width: auto">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a asp-controller="Account" asp-action="Register" class="nav-link">Register</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-controller="Account" asp-action="Login" class="nav-link">Log In</a>
+                        </li>
+                    }
+
+                </ul>
+
             </div>
         </nav>
 

@@ -1,3 +1,15 @@
 ﻿.btn{
     width:75px;
 }
+.imageThumbnail{
+    height:200px;
+    width:auto;
+}
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}

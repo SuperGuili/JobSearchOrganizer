@@ -26,6 +26,16 @@ namespace JobSearchOrganizer.Models
             return job;
         }
 
+        public Job Delete(int id)
+        {
+            Job job = _jobList.FirstOrDefault(j => j.Id == id);
+            if (job != null)
+            {
+                _jobList.Remove(job);
+            }
+            return job;
+        }
+
         public IEnumerable<Job> GetAllJobs()
         {
             return _jobList;
@@ -34,6 +44,21 @@ namespace JobSearchOrganizer.Models
         public Job GetJob(int Id)
         {
             return _jobList.FirstOrDefault(j => j.Id == Id);
+        }
+
+        public Job UpdateJob(Job jobChanges)
+        {
+            Job job = _jobList.FirstOrDefault(j => j.Id == jobChanges.Id);
+            if (job != null)
+            {
+                job.Company = jobChanges.Company;
+                job.JobDescription = jobChanges.JobDescription;
+                job.JobLink = jobChanges.JobLink;
+                job.JobEmail = jobChanges.JobEmail;
+                job.Date = jobChanges.Date;
+                job.Expectation = jobChanges.Expectation;
+            }
+            return job;
         }
     }
 }

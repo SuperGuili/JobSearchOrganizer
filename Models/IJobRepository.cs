@@ -7,9 +7,10 @@ namespace JobSearchOrganizer.Models
 {
     public interface IJobRepository
     {
-        Job GetJob(int Id);
         IEnumerable<Job> GetAllJobs();
-
+        Job GetJob(int Id);
         Job AddJob(Job job);
+        Job UpdateJob(Job jobChanges);
+        Job Delete(int id);
     }
 }
