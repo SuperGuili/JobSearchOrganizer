@@ -45,12 +45,12 @@ namespace JobSearchOrganizer
 
             services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = "122886919018-42ca5hglmvhkahp5c19t4h8f33vi2lsm.apps.googleusercontent.com";
-                options.ClientSecret = "6l_Jh5coGGeNGDqHSDTaLdiM";
+                options.ClientId = "";
+                options.ClientSecret = "";
             }).AddFacebook(options =>
             {
-                options.AppId = "249909833479614";
-                options.AppSecret = "9daffa529ba7e0c6d79a13fcb217de45";
+                options.AppId = "";
+                options.AppSecret = "";
             });
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
