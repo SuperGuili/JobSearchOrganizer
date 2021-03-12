@@ -13,3 +13,11 @@
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
+.vl {
+    border-left: 2px solid lightgray;
+    height: 400px;
+    position: absolute;
+    left: 50%;
+    margin-left: -3px;
+    top: inherit;
+}

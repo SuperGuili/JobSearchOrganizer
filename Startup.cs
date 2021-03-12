@@ -30,18 +30,7 @@ namespace JobSearchOrganizer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(
-                options => options.UseSqlServer(_config.GetConnectionString("JobDbConnection")));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            {
-                options.Password.RequiredLength = 3;
-                options.Password.RequiredUniqueChars = 0;
-                options.Password.RequireDigit = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-
-            }).AddEntityFrameworkStores<AppDbContext>();
+                options => options.UseSqlServer(_config.GetConnectionString("JobDbConnection")));            
 
             services.AddMvc(options =>
             {
@@ -54,7 +43,35 @@ namespace JobSearchOrganizer
             }).AddRazorRuntimeCompilation()
               .AddXmlSerializerFormatters();
 
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "122886919018-42ca5hglmvhkahp5c19t4h8f33vi2lsm.apps.googleusercontent.com";
+                options.ClientSecret = "6l_Jh5coGGeNGDqHSDTaLdiM";
+            }).AddFacebook(options =>
+            {
+                options.AppId = "249909833479614";
+                options.AppSecret = "9daffa529ba7e0c6d79a13fcb217de45";
+            });
 
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 3;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+
+                options.SignIn.RequireConfirmedEmail = true;
+
+            }).AddEntityFrameworkStores<AppDbContext>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy",
+                policy => policy.RequireClaim("Delete Role", "true"));
+
+            });
 
             services.AddScoped<IJobRepository, SQLJobRepository>();
         }

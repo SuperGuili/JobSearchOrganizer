@@ -2,14 +2,35 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>51affe2e-cf83-4503-bf49-c723c2358a22</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Migrations\20210309112646_Added_UserID.cs" />
     <Compile Remove="Migrations\20210309112646_Added_UserID.Designer.cs" />
+    <Compile Remove="Migrations\20210310094242_Delete_Restrict.cs" />
+    <Compile Remove="Migrations\20210310094242_Delete_Restrict.Designer.cs" />
+    <Compile Remove="Migrations\20210310094727_Delete_Restrict.cs" />
+    <Compile Remove="Migrations\20210310094727_Delete_Restrict.Designer.cs" />
+    <Compile Remove="Migrations\20210310095019_Delete_Restrict.cs" />
+    <Compile Remove="Migrations\20210310095019_Delete_Restrict.Designer.cs" />
+    <Compile Remove="Migrations\20210310100252_Delete_Restrict.cs" />
+    <Compile Remove="Migrations\20210310100252_Delete_Restrict.Designer.cs" />
+    <Compile Remove="Migrations\20210310105727_Foreign_Key_UserName.cs" />
+    <Compile Remove="Migrations\20210310105727_Foreign_Key_UserName.Designer.cs" />
+    <Compile Remove="Migrations\20210310110826_Foreign_Key_UserName.cs" />
+    <Compile Remove="Migrations\20210310110826_Foreign_Key_UserName.Designer.cs" />
+    <Compile Remove="Migrations\20210310112423_Foreign_Key_UserID.cs" />
+    <Compile Remove="Migrations\20210310112423_Foreign_Key_UserID.Designer.cs" />
+    <Compile Remove="Migrations\20210310112849_Foreign_Key_UserID.cs" />
+    <Compile Remove="Migrations\20210310112849_Foreign_Key_UserID.Designer.cs" />
+    <Compile Remove="Migrations\20210310114013_Foreign_Key_UserID.cs" />
+    <Compile Remove="Migrations\20210310114013_Foreign_Key_UserID.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.10" />
@@ -19,6 +40,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Security\" />
   </ItemGroup>
 
 </Project>

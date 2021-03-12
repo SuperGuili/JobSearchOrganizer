@@ -19,14 +19,10 @@ namespace JobSearchOrganizer.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Seed();
-            
-            //modelBuilder.Seed();
-
-            //foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-            //{
-            //    foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
-            //}
+            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
     }
 }

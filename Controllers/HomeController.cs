@@ -3,6 +3,7 @@ using JobSearchOrganizer.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,11 +19,14 @@ namespace JobSearchOrganizer.Controllers
     {
         private readonly IJobRepository _jobRepository;
         private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public HomeController(IJobRepository jobRepository, IWebHostEnvironment hostingEnvironment)
+        public HomeController(IJobRepository jobRepository, IWebHostEnvironment hostingEnvironment,
+            UserManager<ApplicationUser> userManager)
         {
             _jobRepository = jobRepository;
             this.hostingEnvironment = hostingEnvironment;
+            this.userManager = userManager;
         }
 
         [AllowAnonymous]
@@ -33,17 +37,20 @@ namespace JobSearchOrganizer.Controllers
 
         public ViewResult Index()
         {
-            // filter by user
+            // filter by userId
 
             var jobs = _jobRepository.GetAllJobs();
             var model = new List<Job>();
 
-            foreach (var job in jobs)
+            if (jobs != null)
             {
-                if (job.UserName == User.Identity.Name)
+                foreach (var job in jobs)
                 {
-                    model.Add(job);
-                }                
+                    if (job.UserID == userManager.GetUserId(User))
+                    {
+                        model.Add(job);
+                    }
+                } 
             }
 
             return View(model);
@@ -82,7 +89,7 @@ namespace JobSearchOrganizer.Controllers
 
                 Job newJob = new Job
                 {
-                    UserName = User.Identity.Name,
+                    UserID = userManager.GetUserId(User),
                     Company = model.Company,
                     JobDescription = model.JobDescription,
                     JobLink = model.JobLink,

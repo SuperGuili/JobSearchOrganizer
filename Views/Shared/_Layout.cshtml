@@ -25,6 +25,12 @@
               asp-fallback-test-property="position"
               asp-fallback-test-value="absolute"
               asp-suppress-fallback-integrity="true">
+
+        <script src="~/lib/jquery/jquery.js"></script>
+        <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+
     </environment>
 
     <link href="~/css/site.css" rel="stylesheet" />
@@ -66,8 +72,8 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a asp-controller="Administration" asp-action="ListRoles" class="dropdown-item">Manage Roles</a>
-                                <a asp-controller="Administration" asp-action="ListUsers" class="dropdown-item">Manage Users</a>
+                                <a asp-controller="Administration" asp-action="ListRoles" class="dropdown-item">Roles</a>
+                                <a asp-controller="Administration" asp-action="ListUsers" class="dropdown-item">Users</a>
                             </div>
                         </li>
                     }
@@ -89,10 +95,11 @@
                         <li class="nav-item">
                             <a asp-controller="Account" asp-action="Register" class="nav-link">Register</a>
                         </li>
-
+                        <li class="nav-link disabled"> or </li>
                         <li class="nav-item">
                             <a asp-controller="Account" asp-action="Login" class="nav-link">Log In</a>
                         </li>
+                        <li class="nav-link disabled"> with Google/facebook/Microsoft </li>
                     }
 
                 </ul>

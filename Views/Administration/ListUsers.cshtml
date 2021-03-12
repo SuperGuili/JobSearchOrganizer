@@ -22,12 +22,23 @@
                 <h5 class="card-title">@user.UserName</h5>
             </div>
             <div class="card-footer">
-                <a asp-action="Edit" asp-controller="Account" class="btn btn-primary btn-sm m-1">
-                    Edit
-                </a>
-                <a asp-action="Delete" asp-controller="Account" class="btn btn-danger btn-sm m-1">
-                    Delete
-                </a>
+                <form asp-action="DeleteUser" asp-route-id="@user.Id" method="post">
+                    <a asp-action="EditUser" asp-controller="Administration" asp-route-id="@user.Id"
+                       class="btn btn-primary btn-sm m-1">Edit</a>
+
+                    <span id="confirmDeleteSpan_@user.Id" style="display:none">
+                        <span>Are you sure you want to delete?</span>
+                        <button type="submit" class="btn btn-danger btn-sm m-1">Yes</button>
+                        <a href="#" class="btn btn-primary btn-sm m-1" 
+                           onclick="confirmDelete('@user.Id', false)">No</a>
+                    </span>
+
+                    <span id="deleteSpan_@user.Id">
+                        <a href="#" class="btn btn-danger btn-sm m-1" 
+                           onclick="confirmDelete('@user.Id', true)">Delete</a>
+                    </span>
+
+                </form>
             </div>
         </div>
     }
@@ -47,4 +58,10 @@ else
             </a>
         </div>
     </div>
+}
+
+@section Scripts{
+
+    <script src="~/js/CustomScript.js"></script>
+
 }
