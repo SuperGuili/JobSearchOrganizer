@@ -1,6 +1,8 @@
 ﻿using JobSearchOrganizer.Models;
+using JobSearchOrganizer.Security;
 using JobSearchOrganizer.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,13 +22,16 @@ namespace JobSearchOrganizer.Controllers
         private readonly IJobRepository _jobRepository;
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IDataProtector protector;
 
         public HomeController(IJobRepository jobRepository, IWebHostEnvironment hostingEnvironment,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager, IDataProtectionProvider dataProtectionProvider,
+            DataProtectionPurposeStrings dataProtectionPurposeStrings)
         {
             _jobRepository = jobRepository;
             this.hostingEnvironment = hostingEnvironment;
             this.userManager = userManager;
+            protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.JobIdRouteValue);
         }
 
         [AllowAnonymous]
@@ -39,7 +44,11 @@ namespace JobSearchOrganizer.Controllers
         {
             // filter by userId
 
-            var jobs = _jobRepository.GetAllJobs();
+            var jobs = _jobRepository.GetAllJobs().Select(e =>
+                {
+                    e.EncryptedId = protector.Protect(e.Id.ToString());
+                    return e;
+                });
             var model = new List<Job>();
 
             if (jobs != null)
@@ -50,19 +59,21 @@ namespace JobSearchOrganizer.Controllers
                     {
                         model.Add(job);
                     }
-                } 
+                }
             }
 
             return View(model);
         }
-        public ViewResult Details(int? Id)
+        public ViewResult Details(string Id)
         {
-            Job job = _jobRepository.GetJob(Id.Value);
+            int decryptedId = Convert.ToInt32(protector.Unprotect(Id));
+
+            Job job = _jobRepository.GetJob(decryptedId);
 
             if (job == null)
             {
                 Response.StatusCode = 404;
-                return View("JobNotFound", Id.Value);
+                return View("JobNotFound", decryptedId);
             }
 
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
@@ -164,7 +175,7 @@ namespace JobSearchOrganizer.Controllers
                 using (var filestream = new FileStream(filePath, FileMode.Create))
                 {
                     model.File.CopyTo(filestream);
-                }                
+                }
             }
             return uniqueFileName;
         }

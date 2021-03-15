@@ -7,7 +7,6 @@
 <hr />
 <h1 class="text-center">User Login</h1>
 <hr />
-<br />
 
 <div asp-validation-summary="All" class="text-danger font-weight-bolder"></div>
 
@@ -35,6 +34,10 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary btn-sm m-1">Login</button>
+            <hr />
+            <div>
+                <a asp-action="ForgotPassword" asp-controller="Account">Forgot password?</a>
+            </div>
         </form>
     </div>
     @*<div class="vl"></div>*@

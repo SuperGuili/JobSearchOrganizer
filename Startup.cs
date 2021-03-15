@@ -1,4 +1,5 @@
 using JobSearchOrganizer.Models;
+using JobSearchOrganizer.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,7 +31,7 @@ namespace JobSearchOrganizer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(
-                options => options.UseSqlServer(_config.GetConnectionString("JobDbConnection")));            
+                options => options.UseSqlServer(_config.GetConnectionString("JobDbConnection")));
 
             services.AddMvc(options =>
             {
@@ -45,13 +46,17 @@ namespace JobSearchOrganizer
 
             services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = "";
-                options.ClientSecret = "";
+                IConfigurationSection googleAuthSection = _config.GetSection("Authentication:Google");
+
+                options.ClientId = googleAuthSection["ClientId"];
+                options.ClientSecret = googleAuthSection["ClientSecret"];
             }).AddFacebook(options =>
             {
-                options.AppId = "";
-                options.AppSecret = "";
-            });
+                IConfigurationSection facebookAuthSection = _config.GetSection("Authentication:Facebook");
+
+                options.AppId = facebookAuthSection["AppId"];
+                options.AppSecret = facebookAuthSection["AppSecret"];
+            });//.AddMicrosoftAccount();
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
@@ -64,16 +69,29 @@ namespace JobSearchOrganizer
 
                 options.SignIn.RequireConfirmedEmail = true;
 
-            }).AddEntityFrameworkStores<AppDbContext>();
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+
+                options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
+
+            }).AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders()
+            .AddTokenProvider<CustomEmailConfirmationTokenProvider<ApplicationUser>>("CustomEmailConfirmation");
 
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("DeleteRolePolicy",
                 policy => policy.RequireClaim("Delete Role", "true"));
 
-            });
+            });            
+
+            //Change the life span of the all tokens types
+            //services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(5));
+            services.Configure<CustomEmailConfirmationTokenProviderOptions>(o => o.TokenLifespan =
+            TimeSpan.FromDays(3));
 
             services.AddScoped<IJobRepository, SQLJobRepository>();
+            services.AddSingleton<DataProtectionPurposeStrings>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

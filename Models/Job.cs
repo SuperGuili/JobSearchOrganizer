@@ -11,6 +11,9 @@ namespace JobSearchOrganizer.Models
     {
         public int Id { get; set; }
 
+        [NotMapped]
+        public string EncryptedId { get; set; }
+
         [Required]
         [Column(TypeName = "nvarchar(450)")]
         public string UserID { get; set; }

@@ -290,6 +290,25 @@ namespace JobSearchOrganizer.Controllers
             {
                 try
                 {
+                    //var jobs = await ; //Delete jobs???
+
+                    var logins = await userManager.GetLoginsAsync(user);
+
+                    foreach (var login in logins)
+                    {
+                        await userManager.RemoveLoginAsync(user, login.LoginProvider, login.ProviderKey);
+                    }
+
+                    var rolesForUser = await userManager.GetRolesAsync(user);
+
+                    if (rolesForUser.Count() > 0)
+                    {
+                        foreach (var role in rolesForUser)
+                        {
+                            await userManager.RemoveFromRoleAsync(user, role);
+                        }
+                    }
+
                     var result = await userManager.DeleteAsync(user);
 
                     if (result.Succeeded)
