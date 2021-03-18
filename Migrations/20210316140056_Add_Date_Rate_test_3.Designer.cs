@@ -4,14 +4,16 @@ using JobSearchOrganizer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JobSearchOrganizer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210316140056_Add_Date_Rate_test_3")]
+    partial class Add_Date_Rate_test_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,9 +112,6 @@ namespace JobSearchOrganizer.Migrations
                     b.Property<string>("ContactEmail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContactPhone")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CoverLetter")
                         .HasColumnType("nvarchar(max)");
 
@@ -137,9 +136,6 @@ namespace JobSearchOrganizer.Migrations
 
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("NextStep")
-                        .HasColumnType("int");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");

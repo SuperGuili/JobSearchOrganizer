@@ -40,30 +40,26 @@ namespace JobSearchOrganizer.Controllers
             return View();
         }
 
-        public ViewResult Index()
+        public IActionResult Index()
         {
             // filter by userId
+            var userId = userManager.GetUserId(User);
 
-            var jobs = _jobRepository.GetAllJobs().Select(e =>
-                {
-                    e.EncryptedId = protector.Protect(e.Id.ToString());
-                    return e;
-                });
-            var model = new List<Job>();
+            var jobs = _jobRepository.GetJobsByUser(userId);
 
-            if (jobs != null)
+            if (jobs.Count() > 0)
             {
                 foreach (var job in jobs)
                 {
-                    if (job.UserID == userManager.GetUserId(User))
-                    {
-                        model.Add(job);
-                    }
+                    job.EncryptedId = protector.Protect(job.Id.ToString());
                 }
             }
 
-            return View(model);
+            return View(jobs);
         }
+
+
+        [HttpGet]
         public ViewResult Details(string Id)
         {
             int decryptedId = Convert.ToInt32(protector.Unprotect(Id));
@@ -81,6 +77,76 @@ namespace JobSearchOrganizer.Controllers
                 Job = job,
                 PageTitle = "Job Details"
             };
+            job.EncryptedId = protector.Protect(job.Id.ToString());
+
+            switch (job.JobStatus)
+            {
+                case JobStatus.None:
+                    homeDetailsViewModel.Applied = false;
+                    homeDetailsViewModel.Researched = false;
+                    homeDetailsViewModel.FollowUpSent = false;
+                    homeDetailsViewModel.Interviewed = false;
+                    homeDetailsViewModel.FollowUp2Sent = false;
+                    homeDetailsViewModel.Finished = false;
+                    break;
+
+                case JobStatus.Applied:
+                    homeDetailsViewModel.Applied = true;
+                    homeDetailsViewModel.Researched = false;
+                    homeDetailsViewModel.FollowUpSent = false;
+                    homeDetailsViewModel.Interviewed = false;
+                    homeDetailsViewModel.FollowUp2Sent = false;
+                    homeDetailsViewModel.Finished = false;
+                    break;
+
+                case JobStatus.Researched:
+                    homeDetailsViewModel.Applied = true;
+                    homeDetailsViewModel.Researched = true;
+                    homeDetailsViewModel.FollowUpSent = false;
+                    homeDetailsViewModel.Interviewed = false;
+                    homeDetailsViewModel.FollowUp2Sent = false;
+                    homeDetailsViewModel.Finished = false;
+                    break;
+
+                case JobStatus.FollowUpSent:
+                    homeDetailsViewModel.Applied = true;
+                    homeDetailsViewModel.Researched = true;
+                    homeDetailsViewModel.FollowUpSent = true;
+                    homeDetailsViewModel.Interviewed = false;
+                    homeDetailsViewModel.FollowUp2Sent = false;
+                    homeDetailsViewModel.Finished = false;
+                    break;
+
+                case JobStatus.Interviewed:
+                    homeDetailsViewModel.Applied = true;
+                    homeDetailsViewModel.Researched = true;
+                    homeDetailsViewModel.FollowUpSent = true;
+                    homeDetailsViewModel.Interviewed = true;
+                    homeDetailsViewModel.FollowUp2Sent = false;
+                    homeDetailsViewModel.Finished = false;
+                    break;
+
+                case JobStatus.FollowUp2Sent:
+                    homeDetailsViewModel.Applied = true;
+                    homeDetailsViewModel.Researched = true;
+                    homeDetailsViewModel.FollowUpSent = true;
+                    homeDetailsViewModel.Interviewed = true;
+                    homeDetailsViewModel.FollowUp2Sent = true;
+                    homeDetailsViewModel.Finished = false;
+                    break;
+
+                case JobStatus.Finished:
+                    homeDetailsViewModel.Applied = true;
+                    homeDetailsViewModel.Researched = true;
+                    homeDetailsViewModel.FollowUpSent = true;
+                    homeDetailsViewModel.Interviewed = true;
+                    homeDetailsViewModel.FollowUp2Sent = true;
+                    homeDetailsViewModel.Finished = true;
+                    break;
+
+                default:
+                    break;
+            }
 
             return View(homeDetailsViewModel);
         }
@@ -102,34 +168,128 @@ namespace JobSearchOrganizer.Controllers
                 {
                     UserID = userManager.GetUserId(User),
                     Company = model.Company,
-                    JobDescription = model.JobDescription,
+                    JobPosition = model.JobPosition,
                     JobLink = model.JobLink,
-                    JobEmail = model.JobEmail,
-                    Date = model.Date,
+                    ContactEmail = model.ContactEmail,
+                    ContactPhone = model.ContactPhone,
+                    AppliedDate = model.AppliedDate,
                     Expectation = model.Expectation,
+                    AnnualRate = model.AnnualRate,
+                    JobStatus = 0,
+                    NextStep = JobStatus.Apply,
+                    CommuteCost = model.CommuteCost,
+                    Location = model.Location,
+                    InterviewDate = null,
+                    Notes = null,
+                    CoverLetter = null,
                     FilePath = uniqueFileName
                 };
+
                 _jobRepository.AddJob(newJob);
-                return RedirectToAction("Details", new { id = newJob.Id });
+
+                newJob.EncryptedId = protector.Protect(newJob.Id.ToString());
+
+                return RedirectToAction("Details", new { id = newJob.EncryptedId });
             }
             return View();
         }
 
         [HttpGet]
-        public ViewResult Edit(int id)
+        public ViewResult Edit(string id)
         {
-            Job job = _jobRepository.GetJob(id);
+            int decryptedId = Convert.ToInt32(protector.Unprotect(id));
+
+            Job job = _jobRepository.GetJob(decryptedId);
+
             JobEditViewModel jobEditViewModel = new JobEditViewModel
             {
                 Id = job.Id,
+                EncryptedId = id,
                 Company = job.Company,
-                JobDescription = job.JobDescription,
+                JobPosition = job.JobPosition,
+                AnnualRate = job.AnnualRate,
+                CommuteCost = job.CommuteCost,
                 JobLink = job.JobLink,
-                JobEmail = job.JobEmail,
-                Date = job.Date,
+                Location = job.Location,
+                ContactEmail = job.ContactEmail,
+                ContactPhone = job.ContactPhone,
+                AppliedDate = job.AppliedDate,
+                InterviewDate = job.InterviewDate,
+                JobStatus = job.JobStatus,
+                NextStep = (JobStatus)job.NextStep,
+                Notes = job.Notes,
+                CoverLetter = job.CoverLetter,
                 Expectation = job.Expectation,
-                existingFilePath = job.FilePath
             };
+
+            switch (job.JobStatus)
+            {
+                case JobStatus.None:
+                    jobEditViewModel.Applied = false;
+                    jobEditViewModel.Researched = false;
+                    jobEditViewModel.FollowUpSent = false;
+                    jobEditViewModel.Interviewed = false;
+                    jobEditViewModel.FollowUp2Sent = false;
+                    jobEditViewModel.Finished = false;
+                    break;
+
+                case JobStatus.Applied:
+                    jobEditViewModel.Applied = true;
+                    jobEditViewModel.Researched = false;
+                    jobEditViewModel.FollowUpSent = false;
+                    jobEditViewModel.Interviewed = false;
+                    jobEditViewModel.FollowUp2Sent = false;
+                    jobEditViewModel.Finished = false;
+                    break;
+
+                case JobStatus.Researched:
+                    jobEditViewModel.Applied = true;
+                    jobEditViewModel.Researched = true;
+                    jobEditViewModel.FollowUpSent = false;
+                    jobEditViewModel.Interviewed = false;
+                    jobEditViewModel.FollowUp2Sent = false;
+                    jobEditViewModel.Finished = false;
+                    break;
+
+                case JobStatus.FollowUpSent:
+                    jobEditViewModel.Applied = true;
+                    jobEditViewModel.Researched = true;
+                    jobEditViewModel.FollowUpSent = true;
+                    jobEditViewModel.Interviewed = false;
+                    jobEditViewModel.FollowUp2Sent = false;
+                    jobEditViewModel.Finished = false;
+                    break;
+
+                case JobStatus.Interviewed:
+                    jobEditViewModel.Applied = true;
+                    jobEditViewModel.Researched = true;
+                    jobEditViewModel.FollowUpSent = true;
+                    jobEditViewModel.Interviewed = true;
+                    jobEditViewModel.FollowUp2Sent = false;
+                    jobEditViewModel.Finished = false;
+                    break;
+
+                case JobStatus.FollowUp2Sent:
+                    jobEditViewModel.Applied = true;
+                    jobEditViewModel.Researched = true;
+                    jobEditViewModel.FollowUpSent = true;
+                    jobEditViewModel.Interviewed = true;
+                    jobEditViewModel.FollowUp2Sent = true;
+                    jobEditViewModel.Finished = false;
+                    break;
+
+                case JobStatus.Finished:
+                    jobEditViewModel.Applied = true;
+                    jobEditViewModel.Researched = true;
+                    jobEditViewModel.FollowUpSent = true;
+                    jobEditViewModel.Interviewed = true;
+                    jobEditViewModel.FollowUp2Sent = true;
+                    jobEditViewModel.Finished = true;
+                    break;
+
+                default:
+                    break;
+            }
 
             return View(jobEditViewModel);
         }
@@ -137,30 +297,93 @@ namespace JobSearchOrganizer.Controllers
         [HttpPost]
         public IActionResult Edit(JobEditViewModel model)
         {
+            Job job = _jobRepository.GetJob(model.Id);
+
+            string EncryptedId = protector.Protect(model.Id.ToString());
+
+            model.EncryptedId = EncryptedId;
+
             if (ModelState.IsValid)
             {
-                Job job = _jobRepository.GetJob(model.Id);
+                job.EncryptedId = EncryptedId;
                 job.Company = model.Company;
-                job.JobDescription = model.JobDescription;
+                job.JobPosition = model.JobPosition;
+                job.AnnualRate = model.AnnualRate;
+                job.CommuteCost = model.CommuteCost;
                 job.JobLink = model.JobLink;
-                job.JobEmail = model.JobEmail;
-                job.Date = model.Date;
+                job.Location = model.Location;
+                job.ContactEmail = model.ContactEmail;
+                job.ContactPhone = model.ContactPhone;
+                job.AppliedDate = model.AppliedDate;
+                job.InterviewDate = model.InterviewDate;
+                job.Notes = model.Notes;
+                job.CoverLetter = model.CoverLetter;
+                job.JobStatus = model.JobStatus;
                 job.Expectation = model.Expectation;
 
-                if (model.File != null)
+                if (model.Applied == true)
                 {
-                    if (model.existingFilePath != null)
+                    job.JobStatus = JobStatus.Applied;
+                    job.NextStep = JobStatus.Research;
+
+                    if (model.Researched == true)
                     {
-                        string filePath = Path.Combine(hostingEnvironment.WebRootPath, "files", model.existingFilePath);
-                        System.IO.File.Delete(filePath);
-                    }
-                    job.FilePath = ProcessUploadedFile(model);
+                        job.JobStatus = JobStatus.Researched;
+                        job.NextStep = JobStatus.SendFollowUPEmail;
+
+                        if (model.FollowUpSent == true)
+                        {
+                            job.JobStatus = JobStatus.FollowUpSent;
+                            job.NextStep = JobStatus.Interview;
+
+                            if (model.Interviewed == true)
+                            {
+                                job.JobStatus = JobStatus.Interviewed;
+                                job.NextStep = JobStatus.SendFollowUP2;
+
+                                if (model.FollowUp2Sent == true)
+                                {
+                                    job.JobStatus = JobStatus.FollowUp2Sent;
+                                    job.NextStep = JobStatus.Finished;
+
+                                    if (model.Finished == true)
+                                    {
+                                        job.JobStatus = JobStatus.Finished;
+                                        job.NextStep = JobStatus.None;
+                                    }
+                                }
+                            } 
+                        }                        
+                    }                    
                 }
+                if(model.Applied == false)
+                {
+                    job.JobStatus = JobStatus.None;
+                    job.NextStep = JobStatus.Apply;
+                }                
 
                 _jobRepository.UpdateJob(job);
-                return RedirectToAction("Details", new { id = job.Id });
+
+                return RedirectToAction("Details", new { id = EncryptedId });
             }
+
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult DeleteJob(int id)
+        {
+            Job job = _jobRepository.GetJob(id);
+
+            if (job == null)
+            {
+                Response.StatusCode = 404;
+                return View("JobNotFound", id);
+            }
+
+            _jobRepository.Delete(id);
+
+            return RedirectToAction("Index");
         }
 
         private string ProcessUploadedFile(JobCreateViewModel model)

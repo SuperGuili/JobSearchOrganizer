@@ -8,6 +8,7 @@ namespace JobSearchOrganizer.Models
     public interface IJobRepository
     {
         IEnumerable<Job> GetAllJobs();
+        IEnumerable<Job> GetJobsByUser(string userId);
         Job GetJob(int Id);
         Job AddJob(Job job);
         Job UpdateJob(Job jobChanges);

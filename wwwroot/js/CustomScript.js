@@ -1,20 +1,14 @@
-﻿function confirmDelete(uniqueId, isDeleteClicked)
-{
+﻿function confirmDelete(uniqueId, isDeleteClicked) {
+
     var deleteSpan = 'deleteSpan_' + uniqueId;
     var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
 
-    if (isDeleteClicked)
-    {
+    if (isDeleteClicked) {
         $('#' + deleteSpan).hide();
         $('#' + confirmDeleteSpan).show();
     }
-    else
-    {
+    else {
         $('#' + deleteSpan).show();
         $('#' + confirmDeleteSpan).hide();
     }
-
-    //$('body, html,' + '#' + confirmDeleteSpan).scrollTop(500);
-    //$('#' + confirmDeleteSpan).scrollTop(0);
-    //document.getElementById('#' + confirmDeleteSpan).scrollIntoView();
 }

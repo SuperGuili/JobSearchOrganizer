@@ -23,15 +23,44 @@ namespace JobSearchOrganizer.Models
 
         [Required]
         public string Company { get; set; }
-        public string JobDescription { get; set; }
-        public string JobLink { get; set; }
-
-        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", ErrorMessage = "Invalid Email format")]
-        public string JobEmail { get; set; }
-        public string Date { get; set; }
 
         [Required]
+        public string JobPosition { get; set; }
+
+        [DataType(dataType:DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [DisplayFormat(DataFormatString ="{0:C}", ApplyFormatInEditMode = true)]
+        public decimal AnnualRate { get; set; }
+
+        [DataType(dataType: DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
+        public decimal CommuteCost { get; set; }
+
+        public string JobLink { get; set; }
+
+        public string Location { get; set; }
+
+        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", ErrorMessage = "Invalid Email format")]
+        public string ContactEmail { get; set; }
+
+        public string ContactPhone { get; set; }
+
+        public DateTime? AppliedDate { get; set; }
+
+        public DateTime? InterviewDate { get; set; }
+
         public Expectation? Expectation { get; set; }
+
+        public JobStatus? JobStatus { get; set; }
+
+        public JobStatus? NextStep { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        public string Notes { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        public string CoverLetter { get; set; }
 
         public string FilePath { get; set; }
     }

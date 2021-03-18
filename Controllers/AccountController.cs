@@ -92,7 +92,7 @@ namespace JobSearchOrganizer.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("index", "home");
+            return RedirectToAction("Welcome", "home");
         }
 
         [HttpGet]

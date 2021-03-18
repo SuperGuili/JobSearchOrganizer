@@ -56,7 +56,13 @@ namespace JobSearchOrganizer
 
                 options.AppId = facebookAuthSection["AppId"];
                 options.AppSecret = facebookAuthSection["AppSecret"];
-            });//.AddMicrosoftAccount();
+            }).AddMicrosoftAccount(options => 
+            {
+                IConfigurationSection microsoftAuthSection = _config.GetSection("Authentication:Microsoft");
+
+                options.ClientId = microsoftAuthSection["ClientId"];
+                options.ClientSecret = microsoftAuthSection["ClientSecret"];
+            });
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {

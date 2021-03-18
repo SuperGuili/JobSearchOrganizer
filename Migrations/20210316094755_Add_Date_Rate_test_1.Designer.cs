@@ -4,14 +4,16 @@ using JobSearchOrganizer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JobSearchOrganizer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210316094755_Add_Date_Rate_test_1")]
+    partial class Add_Date_Rate_test_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,11 +99,8 @@ namespace JobSearchOrganizer.Migrations
                     b.Property<decimal>("AnnualRate")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<DateTime?>("AppliedDate")
+                    b.Property<DateTime>("AppliedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal>("CommuteCost")
-                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("Company")
                         .IsRequired()
@@ -110,39 +109,20 @@ namespace JobSearchOrganizer.Migrations
                     b.Property<string>("ContactEmail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContactPhone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CoverLetter")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("Expectation")
                         .HasColumnType("int");
 
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("InterviewDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("JobLink")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("JobPosition")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("JobStatus")
                         .HasColumnType("int");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("NextStep")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserID")
                         .IsRequired()

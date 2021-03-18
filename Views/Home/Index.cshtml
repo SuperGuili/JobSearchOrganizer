@@ -5,30 +5,71 @@
     ViewBag.Title = "Jobs List";
 }
 
-<br />
-<div class="form-group row">
-    <div class="col-sm-3 text-center">
-        <div class="alert alert-success alert-dismissible">            
-            <strong>Total applied jobs: @Model.Count()</strong>
-        </div>
+
+<div class="col-sm-3">
+    <div class="alert alert-info small text-center m-2">
+        <strong>Total applied jobs: @Model.Count()</strong>
     </div>
 </div>
 
-<div class="card-deck">
+
+<div class="small">
     @foreach (var job in Model)
     {
-        var photoPath = "~/files/" + (job.FilePath ?? "microsoft.jpg");
 
-        <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+        var annulRate = job.AnnualRate.ToString("C");
+
+        <div class="card mt-1">
+
             <div class="card-header">
-                <h3>@job.Company</h3>
+                <h4 style="float:left">@job.Company - @job.JobPosition</h4>
+                <h4 style="float:right">Salary: @annulRate</h4>
             </div>
-            <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" height="200" width="100" />
-            <div class="card-body text-center">
-                <a asp-controller="Home" asp-action="Details" asp-route-id="@job.EncryptedId" class="btn btn-primary btn-sm m-1">View</a>
-                <a asp-controller="Home" asp-action="Edit" asp-route-id="@job.Id" class="btn btn-primary btn-sm m-1">Edit</a>
-                <a asp-controller="Home" asp-action="Delete" asp-route-id="@job.Id" class="btn btn-danger btn-sm m-1">Delete</a>
+
+            <div class="card-body row">
+
+                <div style="float:left">
+                    <div class="row m-1">
+                        <div class="alert alert-success m-1 text-center" style="width:200px">
+                            <strong>Status: @job.JobStatus</strong>
+                        </div>
+
+                        <div class="alert alert-info m-1 text-center" style="width:200px">
+                            <strong>Next: @job.NextStep</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-7">
+                    <div style="float:right">
+                        <form asp-action="DeleteJob" asp-route-id="@job.Id" method="post">
+
+                            <a asp-controller="Home" asp-action="Details" asp-route-id="@job.EncryptedId"
+                               class="btn btn-primary btn-sm m-1">View</a>
+                            <a asp-controller="Home" asp-action="Edit" asp-route-id="@job.EncryptedId"
+                               class="btn btn-primary btn-sm m-1">Edit</a>
+
+                            <span id="confirmDeleteSpan_@job.Id" style="display:none">
+                                <span>Are you sure you want to delete?</span>
+                                <button type="submit" class="btn btn-danger btn-sm m-1">Yes</button>
+                                <a class="btn btn-primary btn-sm m-1"
+                                   onclick="confirmDelete('@job.Id', false)">No</a>
+                            </span>
+
+                            <span id="deleteSpan_@job.Id">
+                                <a class="btn btn-danger btn-sm m-1"
+                                   onclick="confirmDelete('@job.Id', true)">Delete</a>
+                            </span>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     }
 </div>
+
+@section Scripts{
+
+    <script src="~/js/CustomScript.js"></script>
+
+}

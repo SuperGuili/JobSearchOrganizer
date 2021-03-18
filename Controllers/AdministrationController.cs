@@ -88,7 +88,7 @@ namespace JobSearchOrganizer.Controllers
             {
                 if (await userManager.IsInRoleAsync(user, role.Name))
                 {
-                    model.Users.Add(user.UserName);
+                    model.Users.Add(user.Email); //UserName);
                 }
             }
 
@@ -259,7 +259,7 @@ namespace JobSearchOrganizer.Controllers
             else
             {
                 user.UserName = model.UserName;
-                user.Email = model.Email;
+                //user.Email = model.Email;
                 user.City = model.City;
 
                 var result = await userManager.UpdateAsync(user);

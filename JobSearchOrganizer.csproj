@@ -26,6 +26,8 @@
     <Compile Remove="Migrations\20210310112849_Foreign_Key_UserID.Designer.cs" />
     <Compile Remove="Migrations\20210310114013_Foreign_Key_UserID.cs" />
     <Compile Remove="Migrations\20210310114013_Foreign_Key_UserID.Designer.cs" />
+    <Compile Remove="Migrations\20210316094318_Add_Date_Rate_test_1.cs" />
+    <Compile Remove="Migrations\20210316094318_Add_Date_Rate_test_1.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

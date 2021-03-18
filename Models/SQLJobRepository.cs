@@ -42,6 +42,13 @@ namespace JobSearchOrganizer.Models
             return context.Jobs.Find(Id);
         }
 
+        IEnumerable<Job> IJobRepository.GetJobsByUser(string userId)
+        {
+            var jobs = context.Jobs.Where(j => j.UserID == userId);
+
+            return jobs;
+        }
+
         Job IJobRepository.UpdateJob(Job jobChanges)
         {
             var job = context.Jobs.Attach(jobChanges);
