@@ -12,7 +12,16 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
+        "SECRET_KEY": "0a2df12a0440ca3b9e80ea10d49cf17a",
         "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IISX-Production": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "SECRET_KEY": "0a2df12a0440ca3b9e80ea10d49cf17a",
+        "ASPNETCORE_ENVIRONMENT": "Production"
       }
     },
     "JobSearchOrganizer": {

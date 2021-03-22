@@ -30,6 +30,12 @@ namespace JobSearchOrganizer.Controllers
                     logger.LogWarning($"404 Error occured. Path = {statusCodeResult.OriginalPath}" 
                         + $" and QueryString = {statusCodeResult.OriginalQueryString}");
                     break;
+
+                case 500:
+                         ViewBag.ErrorMessage = "Sorry, the server faild to process your request";
+                    logger.LogWarning($"500 Error occured. Path = {statusCodeResult.OriginalPath}"
+                        + $" and QueryString = {statusCodeResult.OriginalQueryString}");
+                    break;
             }
 
             return View("NotFound");

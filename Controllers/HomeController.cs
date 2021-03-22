@@ -22,7 +22,7 @@ namespace JobSearchOrganizer.Controllers
         private readonly IJobRepository _jobRepository;
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IDataProtector protector;
+        private readonly IDataProtector protector;     
 
         public HomeController(IJobRepository jobRepository, IWebHostEnvironment hostingEnvironment,
             UserManager<ApplicationUser> userManager, IDataProtectionProvider dataProtectionProvider,
@@ -30,7 +30,7 @@ namespace JobSearchOrganizer.Controllers
         {
             _jobRepository = jobRepository;
             this.hostingEnvironment = hostingEnvironment;
-            this.userManager = userManager;
+            this.userManager = userManager;            
             protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.JobIdRouteValue);
         }
 

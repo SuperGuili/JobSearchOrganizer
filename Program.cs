@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NLog.Extensions.Logging;
+using ChustaSoft.Tools.SecureConfig;
+using JobSearchOrganizer.Security;
 
 namespace JobSearchOrganizer
 {
@@ -14,7 +16,10 @@ namespace JobSearchOrganizer
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args)
+                .Build()
+                .EncryptSettings<AppSettings>(true)
+                .Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

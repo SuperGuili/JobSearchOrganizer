@@ -1,7 +1,9 @@
+using ChustaSoft.Tools.SecureConfig;
 using JobSearchOrganizer.Models;
 using JobSearchOrganizer.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +22,7 @@ namespace JobSearchOrganizer
     public class Startup
     {
         private IConfiguration _config;
+        private readonly AppSettings appSettings;
 
         public Startup(IConfiguration config)
         {
@@ -30,8 +33,17 @@ namespace JobSearchOrganizer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<AppDbContext>(
-                options => options.UseSqlServer(_config.GetConnectionString("JobDbConnection")));
+            services.SetUpSecureConfig<AppSettings>(_config, _config["SECRET_KEY"]);
+
+            services.AddSingleton<DataProtectionPurposeStrings>();
+
+            services.AddDbContextPool<AppDbContext>(options =>
+            {
+                //options.UseSqlServer(_config.GetConnectionString("JobDbConnection"));
+                var ConnectString = services.SetUpSecureConfig<AppSettings>(_config, _config["SECRET_KEY"]).ConnectionStrings.Values.First();
+
+                options.UseSqlServer(ConnectString);
+            });
 
             services.AddMvc(options =>
             {
@@ -44,24 +56,29 @@ namespace JobSearchOrganizer
             }).AddRazorRuntimeCompilation()
               .AddXmlSerializerFormatters();
 
-            services.AddAuthentication().AddGoogle(options =>
+            services.AddAuthentication()
+                .AddGoogle(options =>
             {
-                IConfigurationSection googleAuthSection = _config.GetSection("Authentication:Google");
+                var clientId = services.SetUpSecureConfig<AppSettings>(_config, _config["SECRET_KEY"]).GoogleClientId;
+                var clientSecret = services.SetUpSecureConfig<AppSettings>(_config, _config["SECRET_KEY"]).GoogleClientSecret;
 
-                options.ClientId = googleAuthSection["ClientId"];
-                options.ClientSecret = googleAuthSection["ClientSecret"];
+                options.ClientId = clientId;
+                options.ClientSecret = clientSecret;
             }).AddFacebook(options =>
             {
-                IConfigurationSection facebookAuthSection = _config.GetSection("Authentication:Facebook");
+                var facebookAppId = services.SetUpSecureConfig<AppSettings>(_config, _config["SECRET_KEY"]).FacebookAppId;
+                var facebookAppSecret = services.SetUpSecureConfig<AppSettings>(_config, _config["SECRET_KEY"]).FacebookAppSecret;
 
-                options.AppId = facebookAuthSection["AppId"];
-                options.AppSecret = facebookAuthSection["AppSecret"];
-            }).AddMicrosoftAccount(options => 
+                options.AppId = facebookAppId;
+                options.AppSecret = facebookAppSecret;
+
+            }).AddMicrosoftAccount(options =>
             {
-                IConfigurationSection microsoftAuthSection = _config.GetSection("Authentication:Microsoft");
+                var MicrosoftClientId = services.SetUpSecureConfig<AppSettings>(_config, _config["SECRET_KEY"]).MicrosoftClientId;
+                var MicrosoftClientSecret = services.SetUpSecureConfig<AppSettings>(_config, _config["SECRET_KEY"]).MicrosoftClientSecret;
 
-                options.ClientId = microsoftAuthSection["ClientId"];
-                options.ClientSecret = microsoftAuthSection["ClientSecret"];
+                options.ClientId = MicrosoftClientId;
+                options.ClientSecret = MicrosoftClientSecret;
             });
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -89,15 +106,20 @@ namespace JobSearchOrganizer
                 options.AddPolicy("DeleteRolePolicy",
                 policy => policy.RequireClaim("Delete Role", "true"));
 
-            });            
+            });
 
-            //Change the life span of the all tokens types
+            //services.Configure<IISServerOptions>(options =>
+            //{
+            //    options.AutomaticAuthentication = false;
+            //});
+
+            //Change the life span of all the tokens types
             //services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(5));
             services.Configure<CustomEmailConfirmationTokenProviderOptions>(o => o.TokenLifespan =
             TimeSpan.FromDays(3));
 
             services.AddScoped<IJobRepository, SQLJobRepository>();
-            services.AddSingleton<DataProtectionPurposeStrings>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
