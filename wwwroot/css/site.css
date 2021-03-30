@@ -1,10 +1,19 @@
-﻿.btn{
-    width:75px;
+﻿body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100vh;
 }
-.imageThumbnail{
-    height:200px;
-    width:auto;
+
+.btn {
+    width: 75px;
 }
+
+.imageThumbnail {
+    height: 200px;
+    width: auto;
+}
+
 .center {
     margin: 0;
     position: absolute;
@@ -13,6 +22,7 @@
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
+
 .vl {
     border-left: 2px solid lightgray;
     height: 400px;
@@ -21,6 +31,20 @@
     margin-left: -3px;
     top: inherit;
 }
-.navbar{
-    width:100%;
+
+.navbar {
+    width: 100%;
+}
+
+.centerWelcome {
+    margin-top:150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer {
+    margin-top: auto;
+    background-color: #343a40;
+    color: #999c8d;
 }

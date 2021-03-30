@@ -58,18 +58,31 @@ namespace JobSearchOrganizer.Controllers
             return View(jobs);
         }
 
-
         [HttpGet]
         public ViewResult Details(string Id)
         {
-            int decryptedId = Convert.ToInt32(protector.Unprotect(Id));
-
-            Job job = _jobRepository.GetJob(decryptedId);
-
-            if (job == null)
+            int decryptedId = 0;
+            Job job = null;
+            try
+            {
+                 decryptedId = Convert.ToInt32(protector.Unprotect(Id));
+            }
+            catch (Exception)
             {
                 Response.StatusCode = 404;
                 return View("JobNotFound", decryptedId);
+                //throw;
+            }
+
+            if (decryptedId != 0)
+            {
+                job = _jobRepository.GetJob(decryptedId);
+
+                if (job == null)
+                {
+                    Response.StatusCode = 404;
+                    return View("JobNotFound", decryptedId);
+                } 
             }
 
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
@@ -173,15 +186,19 @@ namespace JobSearchOrganizer.Controllers
                     ContactEmail = model.ContactEmail,
                     ContactPhone = model.ContactPhone,
                     AppliedDate = model.AppliedDate,
+                    CloseDate = model.CloseDate,
                     Expectation = model.Expectation,
                     AnnualRate = model.AnnualRate,
+                    CommuteCost = model.CommuteCost,
+                    Bonus = model.Bonus,
                     JobStatus = 0,
                     NextStep = JobStatus.Apply,
-                    CommuteCost = model.CommuteCost,
                     Location = model.Location,
                     InterviewDate = null,
+                    InterviewDate2 = null,
                     Notes = null,
                     CoverLetter = null,
+                    Feedback = null,
                     FilePath = uniqueFileName
                 };
 
@@ -197,9 +214,28 @@ namespace JobSearchOrganizer.Controllers
         [HttpGet]
         public ViewResult Edit(string id)
         {
-            int decryptedId = Convert.ToInt32(protector.Unprotect(id));
+            int decryptedId = 0;
+            Job job = null;
+            try
+            {
+                decryptedId = Convert.ToInt32(protector.Unprotect(id));
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 404;
+                return View("JobNotFound", decryptedId);                
+            }
 
-            Job job = _jobRepository.GetJob(decryptedId);
+            if (decryptedId != 0)
+            {
+                job = _jobRepository.GetJob(decryptedId);
+
+                if (job == null)
+                {
+                    Response.StatusCode = 404;
+                    return View("JobNotFound", decryptedId);
+                }
+            }           
 
             JobEditViewModel jobEditViewModel = new JobEditViewModel
             {
@@ -209,17 +245,21 @@ namespace JobSearchOrganizer.Controllers
                 JobPosition = job.JobPosition,
                 AnnualRate = job.AnnualRate,
                 CommuteCost = job.CommuteCost,
+                Bonus = job.Bonus,
                 JobLink = job.JobLink,
                 Location = job.Location,
                 ContactEmail = job.ContactEmail,
                 ContactPhone = job.ContactPhone,
                 AppliedDate = job.AppliedDate,
+                CloseDate = job.CloseDate,
                 InterviewDate = job.InterviewDate,
+                InterviewDate2 = job.InterviewDate2,
                 JobStatus = job.JobStatus,
                 NextStep = (JobStatus)job.NextStep,
                 Notes = job.Notes,
                 CoverLetter = job.CoverLetter,
-                Expectation = job.Expectation,
+                Feedback = job.Feedback,
+                Expectation = job.Expectation
             };
 
             switch (job.JobStatus)
@@ -309,15 +349,19 @@ namespace JobSearchOrganizer.Controllers
                 job.Company = model.Company;
                 job.JobPosition = model.JobPosition;
                 job.AnnualRate = model.AnnualRate;
+                job.Bonus = model.Bonus;
                 job.CommuteCost = model.CommuteCost;
                 job.JobLink = model.JobLink;
                 job.Location = model.Location;
                 job.ContactEmail = model.ContactEmail;
                 job.ContactPhone = model.ContactPhone;
                 job.AppliedDate = model.AppliedDate;
+                job.CloseDate = model.CloseDate;
                 job.InterviewDate = model.InterviewDate;
+                job.InterviewDate2 = model.InterviewDate2;
                 job.Notes = model.Notes;
                 job.CoverLetter = model.CoverLetter;
+                job.Feedback = model.Feedback;
                 job.JobStatus = model.JobStatus;
                 job.Expectation = model.Expectation;
 

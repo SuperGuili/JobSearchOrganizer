@@ -27,9 +27,9 @@ namespace JobSearchOrganizer.Models
         [Required]
         public string JobPosition { get; set; }
 
-        [DataType(dataType:DataType.Currency)]
+        [DataType(dataType: DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]
-        [DisplayFormat(DataFormatString ="{0:C}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal AnnualRate { get; set; }
 
         [DataType(dataType: DataType.Currency)]
@@ -37,6 +37,12 @@ namespace JobSearchOrganizer.Models
         [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal CommuteCost { get; set; }
 
+        [DataType(dataType: DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
+        public decimal Bonus { get; set; }
+
+        [DataType(DataType.Url)]
         public string JobLink { get; set; }
 
         public string Location { get; set; }
@@ -48,7 +54,11 @@ namespace JobSearchOrganizer.Models
 
         public DateTime? AppliedDate { get; set; }
 
+        public DateTime? CloseDate { get; set; }
+
         public DateTime? InterviewDate { get; set; }
+
+        public DateTime? InterviewDate2 { get; set; }
 
         public Expectation? Expectation { get; set; }
 
@@ -62,6 +72,12 @@ namespace JobSearchOrganizer.Models
         [DataType(DataType.MultilineText)]
         public string CoverLetter { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        public string Feedback { get; set; }
+
         public string FilePath { get; set; }
+
+        public bool HomeOffice { get; set; }
+        public bool Agency { get; set; }
     }
 }

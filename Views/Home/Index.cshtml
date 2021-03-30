@@ -6,9 +6,16 @@
 }
 
 
-<div class="col-sm-3">
-    <div class="alert alert-info small text-center m-2">
-        <strong>Total applied jobs: @Model.Count()</strong>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="alert alert-info small text-center m-2">
+            <strong>Active applied jobs: @Model.Count(j => j.JobStatus != JobStatus.Finished)</strong>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="alert alert-info small text-center m-2">
+            <strong>Total applied jobs: @Model.Count()</strong>
+        </div>
     </div>
 </div>
 

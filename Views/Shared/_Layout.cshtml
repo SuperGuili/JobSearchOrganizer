@@ -43,7 +43,6 @@
 
 <body>
 
-
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 
         <a class="navbar-brand" asp-controller="Home" asp-action="Welcome">
@@ -56,66 +55,78 @@
 
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
-
-                @if (signInManager.IsSignedIn(User))
-                {
-    <li class="nav-item">
-        <a asp-controller="Home" asp-action="Index" class="nav-link">List</a>
-    </li>
-                    <li class="nav-item">
-                        <a asp-controller="Home" asp-action="Create" class="nav-link">Create</a>
-                    </li>}
-
-                @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                {
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a asp-controller="Administration" asp-action="ListRoles" class="dropdown-item">Roles</a>
-            <a asp-controller="Administration" asp-action="ListUsers" class="dropdown-item">Users</a>
-        </div>
-    </li>}
+                @{ if (signInManager.IsSignedIn(User))
+                    {
+        <li class="nav-item">
+            <a asp-controller="Home" asp-action="Index" class="nav-link">List</a>
+        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Create" class="nav-link">Create</a>
+                        </li> } }
+                @{ if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a asp-controller="Administration" asp-action="ListRoles" class="dropdown-item">Roles</a>
+                <a asp-controller="Administration" asp-action="ListUsers" class="dropdown-item">Users</a>
+            </div>
+        </li> } }
             </ul>
 
             <ul class="navbar-nav ml-auto">
-                @if (signInManager.IsSignedIn(User))
-                {
-    <li class="nav-item">
-        <form method="post" asp-controller="Account" asp-action="LogOut">
-            <button type="submit" class="nav-link btn btn-link py-0" style="width: auto">
-                Logout @User.Identity.Name
-            </button>
-        </form>
-    </li>
-                    <li class="nav-item">
-                        <a asp-controller="Account" asp-action="ChangePassword">Password</a>
-                    </li> }
-                                else
-                                {
-                    <li class="nav-item">
-                        <a asp-controller="Account" asp-action="Register" class="nav-link">Register</a>
-                    </li>
-                                    <li class="nav-link disabled"> or </li>
-                                                    <li class="nav-item">
-                                                        <a asp-controller="Account" asp-action="Login" class="nav-link">Log In</a>
-                                                    </li>
-                                                                    <li class="nav-link disabled"> with Google/facebook/Microsoft </li>}
-
+                @{ if (signInManager.IsSignedIn(User))
+                    {
+        <li class="nav-item">
+            <form method="post" asp-controller="Account" asp-action="LogOut">
+                <button type="submit" class="nav-link btn btn-link py-0" style="width: auto">
+                    Logout @User.Identity.Name
+                </button>
+            </form>
+        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Account" asp-action="ChangePassword">Password</a>
+                        </li>
+ } }
+                @{ else
+                    {
+        <li class="nav-item">
+            <a asp-controller="Account" asp-action="Register" class="nav-link">Register</a>
+        </li>
+                        <li class="nav-link disabled"> or </li>
+                                        <li class="nav-item">
+                                            <a asp-controller="Account" asp-action="Login" class="nav-link">Log In</a>
+                                        </li>
+                                                        <li class="nav-link disabled"> with Google/facebook/Microsoft </li>
+ }}
             </ul>
-
         </div>
     </nav>
 
     <div class="container">
         <div>
-            @RenderBody()
+            @{ @RenderBody() }
+
         </div>
 
-        @if (IsSectionDefined("Scripts"))
-        {
-@RenderSection("Scripts", required: true)}
+        <div>
+            @{ if (IsSectionDefined("Scripts"))
+                {
+    @RenderSection("Scripts", required: true) } }
+        </div>
+
     </div>
+
+    <div class="footer">
+        <div class="ml-5 mt-2" style="float:left">
+            <p>@DateTime.Now</p>
+        </div>
+        <div class="mr-5  mt-2" style="float:right">
+            <p>&copy; @DateTime.Now.Year - Job Search Organizer Inc.</p>
+        </div>
+    </div>
+
 </body>
 
 </html>

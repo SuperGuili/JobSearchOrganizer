@@ -30,6 +30,11 @@ namespace JobSearchOrganizer.ViewModels
         [DisplayFormat(DataFormatString = "{0:C0}", ApplyFormatInEditMode = false)]
         public decimal CommuteCost { get; set; }
 
+        [DataType(dataType: DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [DisplayFormat(DataFormatString = "{0:C0}", ApplyFormatInEditMode = false)]
+        public decimal Bonus { get; set; }
+
         public string JobLink { get; set; }
 
         public string Location { get; set; }
@@ -41,7 +46,11 @@ namespace JobSearchOrganizer.ViewModels
 
         public DateTime? AppliedDate { get; set; }
 
+        public DateTime? CloseDate { get; set; }
+
         public DateTime? InterviewDate { get; set; }
+
+        public DateTime? InterviewDate2 { get; set; }
 
         public Expectation? Expectation { get; set; }
 
@@ -52,6 +61,9 @@ namespace JobSearchOrganizer.ViewModels
 
         [DataType(DataType.MultilineText)]
         public string CoverLetter { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        public string Feedback { get; set; }
 
         public IFormFile File { get; set; }
     }

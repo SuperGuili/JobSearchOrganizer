@@ -1,22 +1,25 @@
 ﻿@model HomeDetailsViewModel
 
-@{
-    ViewBag.Title = "Job details";
-    //var photoPath = "~/files/" + (Model.Job.FilePath ?? "microsoft.jpg");
-}
+@{ ViewBag.Title = "Job details";
+    var total = String.Format("{0:C}", (Model.Job.AnnualRate + Model.Job.Bonus - Model.Job.CommuteCost)); }
 
 <div class="form-group row col-sm-12 mt-2">
-    <div class="alert alert-info small text-center mr-5" style="width:250px">
+    <div class="alert alert-info small text-center mr-5" style="width:230px">
         <strong>Status: @Model.Job.JobStatus</strong>
     </div>
 
-    <div class="alert alert-warning small text-center ml-5" style="width:250px">
+    <div class="alert alert-warning small text-center ml-4" style="width:230px">
         <strong>Next Step: @Model.Job.NextStep</strong>
+    </div>
+
+    <div class="col-sm-6 text-right">
+        <a asp-controller="Home" asp-action="Edit" asp-route-Id="@Model.Job.EncryptedId" class="btn btn-primary btn-sm m-1">Edit</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-danger btn-sm m-1">Cancel</a>
     </div>
 
 </div>
 
-<div class="form-group row">
+<div class="form-group row font-weight-bold">
     <label asp-for="Job.Company" class="col-sm-1 col-form-label"></label>
     <div class="col-sm-4">
         <input asp-for="Job.Company" disabled class="form-control" placeholder="Company" />
@@ -28,45 +31,55 @@
         <input asp-for="Job.JobPosition" disabled class="form-control" placeholder="Job Position" />
     </div>
 
-    <label asp-for="Job.AnnualRate" class="col-sm-1 col-form-label">Income</label>
+    <label asp-for="Job.ContactPhone" class="col-sm-1 col-form-label">Phone</label>
     <div class="col-sm-2">
-        <input asp-for="Job.AnnualRate" disabled class="form-control" placeholder="Annual Rate" />
+        <input asp-for="Job.ContactPhone" disabled class="form-control" placeholder="Contact number" />
+        <span asp-validation-for="Job.ContactPhone" class="text-danger"></span>
     </div>
+
 </div>
 
-<div class="form-group row">
+<div class="form-group row font-weight-bold">
+
     <label asp-for="Job.ContactEmail" class="col-sm-1 col-form-label">Email</label>
     <div class="col-sm-4">
         <input asp-for="Job.ContactEmail" disabled class="form-control" placeholder="Contact email" />
         <span asp-validation-for="Job.ContactEmail" class="text-danger"></span>
     </div>
 
-    <label asp-for="Job.ContactPhone" class="col-sm-1 col-form-label">Phone</label>
-    <div class="col-sm-3">
-        <input asp-for="Job.ContactPhone" disabled class="form-control" placeholder="Contact number" />
-        <span asp-validation-for="Job.ContactPhone" class="text-danger"></span>
+    <a asp-action="" asp-controller="" asp-area="" asp-protocol="" asp-host="@Model.Job.JobLink" target="_blank"
+       class="col-sm-1 col-form-label"><strong>Link</strong></a>
+    <div class="col-sm-6">
+        <input asp-for="Job.JobLink" disabled class="form-control" placeholder="Job Link" />
+    </div>
+
+</div>
+
+<div class="form-group row font-weight-bold">
+
+    <label asp-for="Job.AnnualRate" class="col-sm-1 col-form-label">Income</label>
+    <div class="col-sm-2">
+        <input asp-for="Job.AnnualRate" disabled class="form-control text-right" placeholder="Annual Rate" />
+    </div>
+
+    <label asp-for="Job.Bonus" class="col-sm-1 col-form-label">Bonus</label>
+    <div class="col-sm-2">
+        <input asp-for="Job.Bonus" disabled class="form-control text-right" placeholder="Bonus/Extra" />
     </div>
 
     <label asp-for="Job.CommuteCost" class="col-sm-1 col-form-label">Commute</label>
     <div class="col-sm-2">
-        <input asp-for="Job.CommuteCost" disabled class="form-control" placeholder="Commute Cost" />
+        <input asp-for="Job.CommuteCost" disabled class="form-control text-right" placeholder="Commute Cost" />
+    </div>
+
+    <label class="col-sm-1 col-form-label">Total</label>
+    <div class="col-sm-2">
+        <input value="@total" disabled class="form-control text-right" />
     </div>
 
 </div>
 
-<div class="form-group row">
-    <label asp-for="Job.JobLink" class="col-sm-1 col-form-label">Link</label>
-    <div class="col-sm-7">
-        <input asp-for="Job.JobLink" disabled class="form-control" placeholder="Job Link" />
-    </div>
-
-    <label asp-for="Job.AppliedDate" class="col-sm-1 col-form-label">Applied</label>
-    <div class="col-sm-3">
-        <input asp-for="Job.AppliedDate" disabled class="form-control" />
-    </div>
-</div>
-
-<div class="form-group row">
+<div class="form-group row font-weight-bold">
 
     <label asp-for="Job.Location" class="col-sm-1 col-form-label"></label>
     <div class="col-sm-4">
@@ -82,15 +95,34 @@
         <span asp-validation-for="Job.Expectation" class="text-danger"></span>
     </div>
 
-    <label asp-for="Job.InterviewDate" class="col-sm-1 col-form-label">Interview</label>
+    <label asp-for="Job.AppliedDate" class="col-sm-1 col-form-label">Applied</label>
+    <div class="col-sm-3">
+        <input asp-for="Job.AppliedDate" disabled class="form-control" />
+    </div>
+
+</div>
+
+<div class="form-group row font-weight-bold">
+
+    <label asp-for="Job.InterviewDate" class="col-sm-1 col-form-label">Interview1</label>
     <div class="col-sm-3">
         <input asp-for="Job.InterviewDate" disabled class="form-control" />
+    </div>
+
+    <label asp-for="Job.InterviewDate2" class="col-sm-1 col-form-label">Interview2</label>
+    <div class="col-sm-3">
+        <input asp-for="Job.InterviewDate2" disabled class="form-control" />
+    </div>
+
+    <label asp-for="Job.CloseDate" class="col-sm-1 col-form-label">Close</label>
+    <div class="col-sm-3">
+        <input asp-for="Job.CloseDate" disabled class="form-control" />
     </div>
 
 </div>
 
 <hr />
-<div class="row m-1 justify-content-around">
+<div class="row m-1 justify-content-around font-weight-bold">
     <div class="form-check m-1">
         <input asp-for="@Model.Applied" disabled class="form-check-input" />
         <label class="form-check-label" asp-for="@Model.Applied">Applied</label>
@@ -116,15 +148,30 @@
         <label class="form-check-label" asp-for="@Model.Finished">Finished</label>
     </div>
 </div>
-
-<div asp-validation-summary="All" class="text-danger"></div>
 <hr />
-<div class="form-group row">
-    <div class="col-sm-10">
-        <a asp-controller="Home" asp-action="Edit" asp-route-Id="@Model.Job.EncryptedId" class="btn btn-primary btn-sm m-1">Edit</a>
-        <a asp-controller="Home" asp-action="Index" class="btn btn-danger btn-sm">Cancel</a>
+
+<div class="form-group row font-weight-bold">
+    <label asp-for="Job.CoverLetter" class="col-sm-1 col-form-label">Cover Letter</label>
+    <div class="col-sm-11">
+        <textarea asp-for="Job.CoverLetter" disabled class="form-control"></textarea>
     </div>
 </div>
+
+<div class="form-group row font-weight-bold">
+    <label asp-for="Job.Notes" class="col-sm-1 col-form-label">Notes</label>
+    <div class="col-sm-11">
+        <textarea asp-for="Job.Notes" disabled class="form-control"></textarea>
+    </div>
+</div>
+
+<div class="form-group row font-weight-bold">
+    <label asp-for="Job.Feedback" class="col-sm-1 col-form-label">Feedback</label>
+    <div class="col-sm-11">
+        <textarea asp-for="Job.Feedback" disabled class="form-control"></textarea>
+    </div>
+</div>
+
+@*<div asp-validation-summary="All" class="text-danger"></div>*@
 
 @section Scripts{
     <script src="~/js/CustomScript.js"></script>
