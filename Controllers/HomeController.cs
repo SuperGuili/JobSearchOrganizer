@@ -194,11 +194,13 @@ namespace JobSearchOrganizer.Controllers
                     JobStatus = 0,
                     NextStep = JobStatus.Apply,
                     Location = model.Location,
-                    InterviewDate = null,
+                    InterviewDate = model.InterviewDate,
                     InterviewDate2 = null,
                     Notes = null,
                     CoverLetter = null,
                     Feedback = null,
+                    IsAgency = model.IsAgency,
+                    IsHomeOffice = model.IsHomeOffice,
                     FilePath = uniqueFileName
                 };
 
@@ -259,7 +261,9 @@ namespace JobSearchOrganizer.Controllers
                 Notes = job.Notes,
                 CoverLetter = job.CoverLetter,
                 Feedback = job.Feedback,
-                Expectation = job.Expectation
+                Expectation = job.Expectation,
+                IsAgency = job.IsAgency,
+                IsHomeOffice = job.IsHomeOffice
             };
 
             switch (job.JobStatus)
@@ -364,6 +368,8 @@ namespace JobSearchOrganizer.Controllers
                 job.Feedback = model.Feedback;
                 job.JobStatus = model.JobStatus;
                 job.Expectation = model.Expectation;
+                job.IsAgency = model.IsAgency;
+                job.IsHomeOffice = model.IsHomeOffice;
 
                 if (model.Applied == true)
                 {

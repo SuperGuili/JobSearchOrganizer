@@ -77,7 +77,8 @@ namespace JobSearchOrganizer.Models
 
         public string FilePath { get; set; }
 
-        public bool HomeOffice { get; set; }
-        public bool Agency { get; set; }
+        public bool IsHomeOffice { get; set; }
+
+        public bool IsAgency { get; set; }
     }
 }

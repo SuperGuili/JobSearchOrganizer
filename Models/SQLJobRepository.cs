@@ -44,7 +44,7 @@ namespace JobSearchOrganizer.Models
 
         IEnumerable<Job> IJobRepository.GetJobsByUser(string userId)
         {
-            var jobs = context.Jobs.Where(j => j.UserID == userId);
+            var jobs = context.Jobs.Where(j => j.UserID == userId).OrderByDescending(j => j.Id);
 
             return jobs;
         }

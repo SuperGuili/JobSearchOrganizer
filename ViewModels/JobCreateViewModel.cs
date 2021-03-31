@@ -65,6 +65,9 @@ namespace JobSearchOrganizer.ViewModels
         [DataType(DataType.MultilineText)]
         public string Feedback { get; set; }
 
+        public bool IsHomeOffice { get; set; }
+        public bool IsAgency { get; set; }
+
         public IFormFile File { get; set; }
     }
 }

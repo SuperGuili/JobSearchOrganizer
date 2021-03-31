@@ -6,7 +6,24 @@
 
 <form enctype="multipart/form-data" asp-controller="Home" asp-action="Create" method="post" class="mt-3">
 
-    <div class="form-group row">
+    <hr />
+    <div class="form-group row col-sm-12 font-weight-bold">
+
+        <div class="form-check">
+            <input asp-for="@Model.IsAgency" class="form-check-input" />
+            <label class="form-check-label" asp-for="@Model.IsAgency">Agency</label>
+        </div>
+
+        <div class="form-check ml-5">
+            <input asp-for="@Model.IsHomeOffice" class="form-check-input" />
+            <label class="form-check-label" asp-for="@Model.IsHomeOffice">Home Office</label>
+        </div>
+
+    </div>
+    <hr />
+
+    <div class="form-group row font-weight-bold">
+
         <label asp-for="Company" class="col-sm-1 col-form-label"></label>
         <div class="col-sm-4">
             <input asp-for="Company" class="form-control" placeholder="Company" />
@@ -16,47 +33,59 @@
         <label asp-for="JobPosition" class="col-sm-1 col-form-label">Position</label>
         <div class="col-sm-3">
             <input asp-for="JobPosition" class="form-control" placeholder="Job Position" />
+            <span asp-validation-for="JobPosition" class="text-danger"></span>
         </div>
 
-        <label asp-for="AnnualRate" class="col-sm-1 col-form-label">Income</label>
+        <label asp-for="ContactPhone" class="col-sm-1 col-form-label">Phone</label>
         <div class="col-sm-2">
-            <input asp-for="AnnualRate" class="form-control" placeholder="Annual Rate" value="0"/>
+            <input asp-for="ContactPhone" class="form-control" placeholder="Contact number" />
+            <span asp-validation-for="ContactPhone" class="text-danger"></span>
         </div>
+
+        
+
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row font-weight-bold">
+
         <label asp-for="ContactEmail" class="col-sm-1 col-form-label">Email</label>
         <div class="col-sm-4">
             <input asp-for="ContactEmail" class="form-control" placeholder="Contact email" />
             <span asp-validation-for="ContactEmail" class="text-danger"></span>
         </div>
 
-        <label asp-for="ContactPhone" class="col-sm-1 col-form-label">Phone</label>
-        <div class="col-sm-3">
-            <input asp-for="ContactPhone" class="form-control" placeholder="Contact number" />
-            <span asp-validation-for="ContactPhone" class="text-danger"></span>
-        </div>
-
-        <label asp-for="CommuteCost" class="col-sm-1 col-form-label">Commute</label>
-        <div class="col-sm-2">
-            <input asp-for="CommuteCost" class="form-control" placeholder="Commute Cost" value="0"/>
-        </div>
-
-    </div>
-
-    <div class="form-group row">
         <label asp-for="JobLink" class="col-sm-1 col-form-label">Link</label>
-        <div class="col-sm-7">
+        <div class="col-sm-6">
             <input asp-for="JobLink" class="form-control" placeholder="Job Link" />
-        </div>
+            <span asp-validation-for="JobLink" class="text-danger"></span>
+        </div>        
 
-        <label asp-for="AppliedDate" class="col-sm-1 col-form-label"></label>
-        <div class="col-sm-3">
-            <input asp-for="AppliedDate" class="form-control" placeholder="Date" />
-        </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row font-weight-bold">
+
+        <label asp-for="AnnualRate" class="col-sm-2 col-form-label">Annual income</label>
+        <div class="col-sm-2">
+            <input asp-for="AnnualRate" class="form-control text-right" placeholder="Annual Rate" value="0" />
+            <span asp-validation-for="AnnualRate" class="text-danger"></span>
+        </div>
+
+        <label asp-for="Bonus" class="col-sm-2 col-form-label text-right">Bonus/Comission</label>
+        <div class="col-sm-2">
+            <input asp-for="Bonus" class="form-control text-right" placeholder="Bonus" value="0"/>
+            <span asp-validation-for="Bonus" class="text-danger"></span>
+        </div>
+
+        <label asp-for="CommuteCost" class="col-sm-2 col-form-label text-right">Commute cost</label>
+        <div class="col-sm-2">
+            <input asp-for="CommuteCost" class="form-control text-right" placeholder="Commute Cost" value="0"/>
+            <span asp-validation-for="CommuteCost" class="text-danger"></span>
+        </div>
+        
+    </div>
+
+    <div class="form-group row font-weight-bold">
+
         <label asp-for="Location" class="col-sm-1 col-form-label"></label>
         <div class="col-sm-3">
             <input asp-for="Location" class="form-control" placeholder="Company Location or Address" />
@@ -70,25 +99,25 @@
             </select>
             <span asp-validation-for="Expectation" class="text-danger"></span>
         </div>
+
+        <label asp-for="AppliedDate" class="col-sm-2 col-form-label text-right">Applied date</label>
+        <div class="col-sm-3">
+            <input asp-for="AppliedDate" class="form-control" placeholder="Date" />
+        </div>
+
     </div>
 
-    @*<div class="form-group row">
-        <label asp-for="File" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <div class="custom-file">
-                <input asp-for="File" class="form-control custom-file-input" />
-                <label class="custom-file-label">Chosse File...</label>
-            </div>
-        </div>
-    </div>*@
-
     <div asp-validation-summary="All" class="text-danger"></div>
+
     <hr />
+
     <div class="form-group row">
+
         <div class="col-sm-10">
             <button type="submit" class="btn btn-primary btn-sm m-1">Create</button>
-            <a asp-action="Index" asp-controller="Home" class="btn btn-danger btn-sm m-1" >Cancel</a>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-danger btn-sm m-1">Cancel</a>
         </div>
+
     </div>
 
     @section Scripts {

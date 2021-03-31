@@ -4,6 +4,7 @@
     var total = String.Format("{0:C}", (Model.Job.AnnualRate + Model.Job.Bonus - Model.Job.CommuteCost)); }
 
 <div class="form-group row col-sm-12 mt-2">
+
     <div class="alert alert-info small text-center mr-5" style="width:230px">
         <strong>Status: @Model.Job.JobStatus</strong>
     </div>
@@ -18,6 +19,21 @@
     </div>
 
 </div>
+<hr />
+<div class="form-group row col-sm-12 font-weight-bold" >
+
+    <div class="form-check">
+        <input asp-for="@Model.Job.IsAgency" disabled class="form-check-input" />
+        <label class="form-check-label" asp-for="@Model.Job.IsAgency">Agency</label>
+    </div>
+
+    <div class="form-check ml-5">
+        <input asp-for="@Model.Job.IsHomeOffice" disabled class="form-check-input" />
+        <label class="form-check-label" asp-for="@Model.Job.IsHomeOffice">Home Office</label>
+    </div>
+
+</div>
+<hr />
 
 <div class="form-group row font-weight-bold">
     <label asp-for="Job.Company" class="col-sm-1 col-form-label"></label>
@@ -153,21 +169,21 @@
 <div class="form-group row font-weight-bold">
     <label asp-for="Job.CoverLetter" class="col-sm-1 col-form-label">Cover Letter</label>
     <div class="col-sm-11">
-        <textarea asp-for="Job.CoverLetter" disabled class="form-control"></textarea>
+        <textarea asp-for="Job.CoverLetter" disabled class="form-control" rows="10" style="text-wrap:normal" type="text" placeholder="Please add your cover letter here"></textarea>
     </div>
 </div>
 
 <div class="form-group row font-weight-bold">
     <label asp-for="Job.Notes" class="col-sm-1 col-form-label">Notes</label>
     <div class="col-sm-11">
-        <textarea asp-for="Job.Notes" disabled class="form-control"></textarea>
+        <textarea asp-for="Job.Notes" disabled class="form-control" rows="10" style="text-wrap:normal" type="text" placeholder="Please add your notes here"></textarea>
     </div>
 </div>
 
 <div class="form-group row font-weight-bold">
     <label asp-for="Job.Feedback" class="col-sm-1 col-form-label">Feedback</label>
     <div class="col-sm-11">
-        <textarea asp-for="Job.Feedback" disabled class="form-control"></textarea>
+        <textarea asp-for="Job.Feedback" disabled class="form-control" rows="10" style="text-wrap:normal" type="text" placeholder="Please add your feedback here"></textarea>
     </div>
 </div>
 
