@@ -448,6 +448,37 @@ namespace JobSearchOrganizer.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public IActionResult SearchResults( string SearchWord)
+        {
+            if (SearchWord != null)
+            {
+                var userId = userManager.GetUserId(User);
+
+                var jobs = _jobRepository.SearchResult(userId, SearchWord);
+
+                if (jobs.Count() > 0)
+                {
+                    foreach (var job in jobs)
+                    {
+                        job.EncryptedId = protector.Protect(job.Id.ToString());
+                    }
+                }
+
+                if (jobs.Count() == 0)
+                {
+                    Response.StatusCode = 404;
+                    return View("JobNotFound");
+                }
+
+                return View("Index", jobs);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
         private string ProcessUploadedFile(JobCreateViewModel model)
         {
             string uniqueFileName = null;

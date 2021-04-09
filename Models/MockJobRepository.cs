@@ -51,6 +51,11 @@ namespace JobSearchOrganizer.Models
             throw new NotImplementedException();
         }
 
+        public IEnumerable<Job> SearchResult(string userId, string searchWord)
+        {
+            throw new NotImplementedException();
+        }
+
         public Job UpdateJob(Job jobChanges)
         {
             Job job = _jobList.FirstOrDefault(j => j.Id == jobChanges.Id);

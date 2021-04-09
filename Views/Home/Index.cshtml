@@ -1,79 +1,98 @@
 ﻿@model IEnumerable<Job>
-@inject IJobRepository _jobRepository
 
-@{
-    ViewBag.Title = "Jobs List";
-}
+@{ ViewBag.Title = "Jobs List"; }
 
+<div class="row col-sm-12 mt-3 mb-3">
 
-<div class="row">
     <div class="col-sm-3">
-        <div class="alert alert-success small text-center m-3">
+        <div class="alert alert-success small text-center m-0">
             <strong>Active applied jobs: @Model.Count(j => j.JobStatus != JobStatus.Finished)</strong>
         </div>
     </div>
+
     <div class="col-sm-3">
-        <div class="alert alert-info small text-center m-3">
+        <div class="alert alert-info small text-center m-0">
             <strong>Total applied jobs: @Model.Count()</strong>
         </div>
     </div>
-</div>
 
+    <div class="col-sm-2 mr-4"></div>
 
-<div class="small">
-    @foreach (var job in Model)
-    {
+    <form asp-action="SearchResults" method="post">
 
-        var annulRate = job.AnnualRate.ToString("C");
+        <div class="form-row mt-1 ml-5">
 
-        <div class="card mt-1">
-
-            <div class="card-header">
-                <h4 style="float:left">@job.Company - @job.JobPosition</h4>
-                <h4 style="float:right">Salary: @annulRate</h4>
+            <label for="SearchWord" class="control-label"></label>
+            <div class="">
+                <input name="SearchWord" class="form-control" placeholder="Filter by Company" />
             </div>
 
-            <div class="card-body row">
-
-                <div style="float:left">
-                    <div class="row m-1">
-                        <div class="alert alert-success m-1 text-center" style="width:200px">
-                            <strong>Status: @job.JobStatus</strong>
-                        </div>
-
-                        <div class="alert alert-info m-1 text-center" style="width:200px">
-                            <strong>Next: @job.NextStep</strong>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-7 ">
-                    <div style="float:right">
-                        <form asp-action="DeleteJob" asp-route-id="@job.Id" method="post">
-
-                            <a asp-controller="Home" asp-action="Details" asp-route-id="@job.EncryptedId"
-                               class="btn btn-primary btn-sm m-1 ">View</a>
-                            <a asp-controller="Home" asp-action="Edit" asp-route-id="@job.EncryptedId"
-                               class="btn btn-primary btn-sm m-1 ">Edit</a>
-
-                            <span id="confirmDeleteSpan_@job.Id" style="display:none">
-                                <span>Are you sure you want to delete?</span>
-                                <button type="submit" class="btn btn-danger btn-sm m-1 ">Yes</button>
-                                <a class="btn btn-primary btn-sm m-1 "
-                                   onclick="confirmDelete('@job.Id', false)">No</a>
-                            </span>
-
-                            <span id="deleteSpan_@job.Id">
-                                <a class="btn btn-danger btn-sm m-1 "
-                                   onclick="confirmDelete('@job.Id', true)">Delete</a>
-                            </span>
-                        </form>
-                    </div>
-                </div>
+            <div class="">
+                <input type="submit" value="Filter" class="btn btn-primary btn-sm m-1" />
             </div>
+
         </div>
-    }
+
+    </form>
+
 </div>
+
+
+        <div class="small">
+            @foreach (var job in Model)
+            {
+                var annulRate = job.AnnualRate.ToString("C");
+
+                <div class="card mt-1">
+
+                    <div class="card-header">
+                        <h4 style="float:left">@job.Company - @job.JobPosition</h4>
+                        <h4 style="float:right">Salary: @annulRate</h4>
+                    </div>
+
+                    <div class="card-body row">
+
+                        <div style="float:left">
+                            <div class="row m-1">
+                                <div class="alert alert-success m-1 text-center" style="width:200px">
+                                    <strong>Status: @job.JobStatus</strong>
+                                </div>
+
+                                <div class="alert alert-info m-1 text-center" style="width:200px">
+                                    <strong>Next: @job.NextStep</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-7 ">
+                            <div style="float:right">
+                                <form asp-action="DeleteJob" asp-route-id="@job.Id" method="post">
+
+                                    <a asp-controller="Home" asp-action="Details" asp-route-id="@job.EncryptedId"
+                                    class="btn btn-primary btn-sm m-1 ">View</a>
+                                    <a asp-controller="Home" asp-action="Edit" asp-route-id="@job.EncryptedId"
+                                    class="btn btn-primary btn-sm m-1 ">Edit</a>
+
+                                    <span id="confirmDeleteSpan_@job.Id" style="display:none">
+                                        <span>Are you sure you want to delete?</span>
+                                        <button type="submit" class="btn btn-danger btn-sm m-1 ">Yes</button>
+                                        <a class="btn btn-primary btn-sm m-1 "
+                                        onclick="confirmDelete('@job.Id', false)">No</a>
+                                    </span>
+
+                                    <span id="deleteSpan_@job.Id">
+                                        <a class="btn btn-danger btn-sm m-1 "
+                                        onclick="confirmDelete('@job.Id', true)">Delete</a>
+                                    </span>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+
 
 @section Scripts{
 

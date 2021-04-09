@@ -49,6 +49,14 @@ namespace JobSearchOrganizer.Models
             return jobs;
         }
 
+        IEnumerable<Job> IJobRepository.SearchResult(string userId, string searchWord)
+        {
+            var jobs = context.Jobs.Where(j => j.UserID == userId).Where(j => j.Company.Contains(searchWord))
+                .OrderByDescending(j => j.Id);
+
+            return jobs;
+        }
+
         Job IJobRepository.UpdateJob(Job jobChanges)
         {
             var job = context.Jobs.Attach(jobChanges);
