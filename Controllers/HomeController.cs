@@ -184,6 +184,7 @@ namespace JobSearchOrganizer.Controllers
                     JobPosition = model.JobPosition,
                     JobLink = model.JobLink,
                     ContactEmail = model.ContactEmail,
+                    ContactName = model.ContactName,
                     ContactPhone = model.ContactPhone,
                     AppliedDate = model.AppliedDate,
                     CloseDate = model.CloseDate,
@@ -196,11 +197,14 @@ namespace JobSearchOrganizer.Controllers
                     Location = model.Location,
                     InterviewDate = model.InterviewDate,
                     InterviewDate2 = null,
+                    JobDescription = model.JobDescription,
                     Notes = null,
                     CoverLetter = null,
                     Feedback = null,
                     IsAgency = model.IsAgency,
                     IsHomeOffice = model.IsHomeOffice,
+                    IsApprentice = model.IsApprentice,
+                    IsPartTime = model.IsPartTime,
                     FilePath = uniqueFileName
                 };
 
@@ -251,6 +255,7 @@ namespace JobSearchOrganizer.Controllers
                 JobLink = job.JobLink,
                 Location = job.Location,
                 ContactEmail = job.ContactEmail,
+                ContactName = job.ContactName,
                 ContactPhone = job.ContactPhone,
                 AppliedDate = job.AppliedDate,
                 CloseDate = job.CloseDate,
@@ -258,12 +263,15 @@ namespace JobSearchOrganizer.Controllers
                 InterviewDate2 = job.InterviewDate2,
                 JobStatus = job.JobStatus,
                 NextStep = (JobStatus)job.NextStep,
+                JobDescription = job.JobDescription,
                 Notes = job.Notes,
                 CoverLetter = job.CoverLetter,
                 Feedback = job.Feedback,
                 Expectation = job.Expectation,
                 IsAgency = job.IsAgency,
-                IsHomeOffice = job.IsHomeOffice
+                IsHomeOffice = job.IsHomeOffice,
+                IsApprentice = job.IsApprentice,
+                IsPartTime = job.IsPartTime
             };
 
             switch (job.JobStatus)
@@ -358,11 +366,13 @@ namespace JobSearchOrganizer.Controllers
                 job.JobLink = model.JobLink;
                 job.Location = model.Location;
                 job.ContactEmail = model.ContactEmail;
+                job.ContactName = model.ContactName;
                 job.ContactPhone = model.ContactPhone;
                 job.AppliedDate = model.AppliedDate;
                 job.CloseDate = model.CloseDate;
                 job.InterviewDate = model.InterviewDate;
                 job.InterviewDate2 = model.InterviewDate2;
+                job.JobDescription = model.JobDescription;
                 job.Notes = model.Notes;
                 job.CoverLetter = model.CoverLetter;
                 job.Feedback = model.Feedback;
@@ -370,6 +380,8 @@ namespace JobSearchOrganizer.Controllers
                 job.Expectation = model.Expectation;
                 job.IsAgency = model.IsAgency;
                 job.IsHomeOffice = model.IsHomeOffice;
+                job.IsApprentice = model.IsApprentice;
+                job.IsPartTime = model.IsPartTime;
 
                 if (model.Applied == true)
                 {

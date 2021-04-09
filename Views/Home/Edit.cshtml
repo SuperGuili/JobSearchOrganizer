@@ -10,19 +10,20 @@
     <input hidden asp-for="EncryptedId" />
     <input hidden asp-for="JobStatus" />
 
-    <div class="form-group row col-sm-12 mt-2">
+    <div class="form-group row col-sm-12 mt-3">
 
-        <div class="alert alert-info small text-center mr-5" style="width:230px">
+        <div class="alert alert-success small text-center mr-5 mb-0" style="width:230px">
             <strong>Status: @Model.JobStatus</strong>
         </div>
 
-        <div class="alert alert-warning small text-center ml-4" style="width:230px">
+        <div class="alert alert-info small text-center ml-4 mb-0" style="width:230px">
             <strong>Next Step: @Model.NextStep</strong>
         </div>
 
-        <div class="col-sm-6 text-right">
-            <button type="submit" class="btn btn-primary btn-sm m-1">Update</button>
-            <a asp-controller="Home" asp-action="Details" asp-route-Id="@Model.EncryptedId" class="btn btn-danger btn-sm m-1">Cancel</a>
+        <div class="col-sm-6 text-right mb-0">
+            <button type="submit" class="btn btn-primary btn-sm m-1 ">Update</button>
+            <a asp-controller="Home" asp-action="Details" asp-route-Id="@Model.EncryptedId" class="btn btn-danger btn-sm m-1 ">
+                Cancel</a>
         </div>
 
     </div>
@@ -30,14 +31,33 @@
     <hr />
     <div class="form-group row col-sm-12 font-weight-bold">
 
-        <div class="form-check">
-            <input asp-for="@Model.IsAgency"  class="form-check-input" />
-            <label class="form-check-label" asp-for="@Model.IsAgency">Agency</label>
+        <label asp-for="Company" class="col-form-label mr-2"></label>
+        <div class="col-sm-4">
+            <input asp-for="Company" class="form-control" placeholder="Company" />
+            <span asp-validation-for="Company" class="text-danger"></span>
         </div>
 
-        <div class="form-check ml-5">
-            <input asp-for="@Model.IsHomeOffice"  class="form-check-input" />
-            <label class="form-check-label" asp-for="@Model.IsHomeOffice">Home Office</label>
+        <div class="row mt-2">
+            <div class="form-check ml-5">
+                <input asp-for="@Model.IsAgency" class="form-check-input" />
+                <label class="form-check-label" asp-for="@Model.IsAgency">Agency</label>
+            </div>
+
+            <div class="form-check ml-5">
+                <input asp-for="@Model.IsHomeOffice" class="form-check-input" />
+                <label class="form-check-label" asp-for="@Model.IsHomeOffice">Home Office</label>
+            </div>
+
+            <div class="form-check ml-5">
+                <input asp-for="@Model.IsPartTime" class="form-check-input" />
+                <label class="form-check-label" asp-for="@Model.IsPartTime">Part Time</label>
+            </div>
+
+            <div class="form-check ml-5">
+                <input asp-for="@Model.IsApprentice" class="form-check-input" />
+                <label class="form-check-label" asp-for="@Model.IsApprentice">Apprentice</label>
+            </div>
+
         </div>
 
     </div>
@@ -45,19 +65,19 @@
 
     <div class="form-group row font-weight-bold">
 
-        <label asp-for="Company" class="col-sm-1 col-form-label"></label>
-        <div class="col-sm-4">
-            <input asp-for="Company" class="form-control" placeholder="Company" />
-            <span asp-validation-for="Company" class="text-danger"></span>
-        </div>
-
         <label asp-for="JobPosition" class="col-sm-1 col-form-label">Position</label>
         <div class="col-sm-3">
             <input asp-for="JobPosition" class="form-control" placeholder="Job Position" />
             <span asp-validation-for="JobPosition" class="text-danger"></span>
         </div>
 
-        <label asp-for="ContactPhone" class="col-sm-1 col-form-label">Phone</label>
+        <label asp-for="ContactName" class="col-sm-2 col-form-label text-right">Contact Name</label>
+        <div class="col-sm-3">
+            <input asp-for="ContactName" class="form-control" placeholder="Contact Name" />
+            <span asp-validation-for="ContactName" class="text-danger"></span>
+        </div>
+
+        <label asp-for="ContactPhone" class="col-sm-1 col-form-label text-right">Phone</label>
         <div class="col-sm-2">
             <input asp-for="ContactPhone" class="form-control" placeholder="Contact number" />
             <span asp-validation-for="ContactPhone" class="text-danger"></span>
@@ -73,7 +93,7 @@
             <span asp-validation-for="ContactEmail" class="text-danger"></span>
         </div>
 
-        <label asp-for="JobLink" class="col-sm-1 col-form-label">Link</label>
+        <label asp-for="JobLink" class="col-sm-1 col-form-label text-right">Link</label>
         <div class="col-sm-6">
             <input asp-for="JobLink" class="form-control" placeholder="Job Link" />
             <span asp-validation-for="JobLink" class="text-danger"></span>
@@ -88,17 +108,17 @@
             <input asp-for="AnnualRate" class="form-control text-right" placeholder="Annual Rate" />
         </div>
 
-        <label asp-for="Bonus" class="col-sm-1 col-form-label">Bonus</label>
+        <label asp-for="Bonus" class="col-sm-1 col-form-label text-right">Bonus</label>
         <div class="col-sm-2">
             <input asp-for="Bonus" class="form-control text-right" placeholder="Bonus" />
         </div>
 
-        <label asp-for="CommuteCost" class="col-sm-1 col-form-label">Commute</label>
+        <label asp-for="CommuteCost" class="col-sm-1 col-form-label text-right">Commute</label>
         <div class="col-sm-2">
             <input asp-for="CommuteCost" class="form-control text-right" placeholder="Commute Cost" />
         </div>
 
-        <label class="col-sm-1 col-form-label">Total</label>
+        <label class="col-sm-1 col-form-label text-right">Total</label>
         <div class="col-sm-2">
             <input value="@total" disabled class="form-control text-right" />
         </div>
@@ -121,7 +141,7 @@
             <span asp-validation-for="Expectation" class="text-danger"></span>
         </div>
 
-        <label asp-for="AppliedDate" class="col-sm-1 col-form-label">Applied</label>
+        <label asp-for="AppliedDate" class="col-sm-1 col-form-label text-right">Applied</label>
         <div class="col-sm-3">
             <input asp-for="AppliedDate" class="form-control" />
         </div>
@@ -140,7 +160,7 @@
             <input asp-for="InterviewDate2" class="form-control" />
         </div>
 
-        <label asp-for="CloseDate" class="col-sm-1 col-form-label">Close</label>
+        <label asp-for="CloseDate" class="col-sm-1 col-form-label text-right">Close</label>
         <div class="col-sm-3">
             <input asp-for="CloseDate" class="form-control" />
         </div>
@@ -187,10 +207,10 @@
 
     <div class="form-group row font-weight-bold">
 
-        <label asp-for="@Model.CoverLetter" class="col-sm-1 col-form-label-sm">Cover Letter</label>
+        <label asp-for="@Model.JobDescription" class="col-sm-1 col-form-label-sm">Description</label>
         <div class="col-sm-11">
-            <textarea asp-for="@Model.CoverLetter" class="form-control" rows="10" style="text-wrap:normal"
-                      type="text" placeholder="Please add your cover letter here"></textarea>
+            <textarea asp-for="@Model.JobDescription" class="form-control" rows="10" style="text-wrap:normal"
+                      type="text" placeholder="Please add the Job Description here"></textarea>
         </div>
 
     </div>
@@ -201,6 +221,16 @@
         <div class="col-sm-11">
             <textarea asp-for="@Model.Notes" class="form-control" rows="10" style="text-wrap:normal"
                       type="text" placeholder="Please add your notes here"></textarea>
+        </div>
+
+    </div>
+
+    <div class="form-group row font-weight-bold">
+
+        <label asp-for="@Model.CoverLetter" class="col-sm-1 col-form-label-sm">Cover Letter</label>
+        <div class="col-sm-11">
+            <textarea asp-for="@Model.CoverLetter" class="form-control" rows="10" style="text-wrap:normal"
+                      type="text" placeholder="Please add your cover letter here"></textarea>
         </div>
 
     </div>

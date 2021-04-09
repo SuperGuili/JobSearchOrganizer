@@ -42,6 +42,8 @@ namespace JobSearchOrganizer.ViewModels
         [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", ErrorMessage = "Invalid Email format")]
         public string ContactEmail { get; set; }
 
+        public string ContactName { get; set; }
+
         public string ContactPhone { get; set; }
 
         public DateTime? AppliedDate { get; set; }
@@ -65,8 +67,15 @@ namespace JobSearchOrganizer.ViewModels
         [DataType(DataType.MultilineText)]
         public string Feedback { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        public string JobDescription { get; set; }
+
         public bool IsHomeOffice { get; set; }
         public bool IsAgency { get; set; }
+
+        public bool IsPartTime { get; set; }
+
+        public bool IsApprentice{ get; set; }
 
         public IFormFile File { get; set; }
     }

@@ -1,4 +1,18 @@
-﻿body {
+﻿:root {
+    --invert: invert(0);
+}
+
+.darkmode {
+    filter: invert(95%) hue-rotate(180deg);
+    background-color: #202020;
+    --invert: invert(95%) hue-rotate(180deg);
+}
+
+.invert{
+    filter: var(--invert);
+}
+
+body {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -7,6 +21,15 @@
 
 .btn {
     width: 75px;
+    filter: var(--invert);
+}
+
+label{
+    color: #6c757d;
+}
+
+.card-header {
+    color: #6c757d;
 }
 
 .imageThumbnail {
