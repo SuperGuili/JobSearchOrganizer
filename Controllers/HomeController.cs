@@ -22,7 +22,7 @@ namespace JobSearchOrganizer.Controllers
         private readonly IJobRepository _jobRepository;
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IDataProtector protector;     
+        private readonly IDataProtector protector;
 
         public HomeController(IJobRepository jobRepository, IWebHostEnvironment hostingEnvironment,
             UserManager<ApplicationUser> userManager, IDataProtectionProvider dataProtectionProvider,
@@ -30,7 +30,7 @@ namespace JobSearchOrganizer.Controllers
         {
             _jobRepository = jobRepository;
             this.hostingEnvironment = hostingEnvironment;
-            this.userManager = userManager;            
+            this.userManager = userManager;
             protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.JobIdRouteValue);
         }
 
@@ -65,7 +65,7 @@ namespace JobSearchOrganizer.Controllers
             Job job = null;
             try
             {
-                 decryptedId = Convert.ToInt32(protector.Unprotect(Id));
+                decryptedId = Convert.ToInt32(protector.Unprotect(Id));
             }
             catch (Exception)
             {
@@ -82,7 +82,7 @@ namespace JobSearchOrganizer.Controllers
                 {
                     Response.StatusCode = 404;
                     return View("JobNotFound", decryptedId);
-                } 
+                }
             }
 
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
@@ -229,7 +229,7 @@ namespace JobSearchOrganizer.Controllers
             catch (Exception)
             {
                 Response.StatusCode = 404;
-                return View("JobNotFound", decryptedId);                
+                return View("JobNotFound", decryptedId);
             }
 
             if (decryptedId != 0)
@@ -241,7 +241,7 @@ namespace JobSearchOrganizer.Controllers
                     Response.StatusCode = 404;
                     return View("JobNotFound", decryptedId);
                 }
-            }           
+            }
 
             JobEditViewModel jobEditViewModel = new JobEditViewModel
             {
@@ -387,42 +387,43 @@ namespace JobSearchOrganizer.Controllers
                 {
                     job.JobStatus = JobStatus.Applied;
                     job.NextStep = JobStatus.Research;
-
-                    if (model.Researched == true)
-                    {
-                        job.JobStatus = JobStatus.Researched;
-                        job.NextStep = JobStatus.SendFollowUPEmail;
-
-                        if (model.FollowUpSent == true)
-                        {
-                            job.JobStatus = JobStatus.FollowUpSent;
-                            job.NextStep = JobStatus.Interview;
-
-                            if (model.Interviewed == true)
-                            {
-                                job.JobStatus = JobStatus.Interviewed;
-                                job.NextStep = JobStatus.SendFollowUP2;
-
-                                if (model.FollowUp2Sent == true)
-                                {
-                                    job.JobStatus = JobStatus.FollowUp2Sent;
-                                    job.NextStep = JobStatus.Finished;
-
-                                    if (model.Finished == true)
-                                    {
-                                        job.JobStatus = JobStatus.Finished;
-                                        job.NextStep = JobStatus.None;
-                                    }
-                                }
-                            } 
-                        }                        
-                    }                    
                 }
-                if(model.Applied == false)
+
+                if (model.Researched == true)
+                {
+                    job.JobStatus = JobStatus.Researched;
+                    job.NextStep = JobStatus.SendFollowUPEmail;
+                }
+
+                if (model.FollowUpSent == true)
+                {
+                    job.JobStatus = JobStatus.FollowUpSent;
+                    job.NextStep = JobStatus.Interview;
+                }
+
+                if (model.Interviewed == true)
+                {
+                    job.JobStatus = JobStatus.Interviewed;
+                    job.NextStep = JobStatus.SendFollowUP2;
+                }
+
+                if (model.FollowUp2Sent == true)
+                {
+                    job.JobStatus = JobStatus.FollowUp2Sent;
+                    job.NextStep = JobStatus.Finished;
+                }
+
+                if (model.Finished == true)
+                {
+                    job.JobStatus = JobStatus.Finished;
+                    job.NextStep = JobStatus.None;
+                }
+
+                if (model.Applied == false)
                 {
                     job.JobStatus = JobStatus.None;
                     job.NextStep = JobStatus.Apply;
-                }                
+                }
 
                 _jobRepository.UpdateJob(job);
 
@@ -449,7 +450,7 @@ namespace JobSearchOrganizer.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchResults( string SearchWord)
+        public IActionResult SearchResults(string SearchWord)
         {
             if (SearchWord != null)
             {

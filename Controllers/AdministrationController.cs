@@ -26,6 +26,7 @@ namespace JobSearchOrganizer.Controllers
             this.roleManager = roleManager;
             this.userManager = userManager;
             this.logger = logger;
+
         }
 
         [HttpGet]

@@ -1,0 +1,47 @@
+﻿@model JobsListViewModel
+
+<div class="card m-1">
+    <div class="card-header small">
+        Job ID: @Model.job.Id - @Model.job.AnnualRate - @Model.job.Company - @Model.userName
+    </div>
+    <div class="card-body small">
+        <div class="form-row">
+            <div class="col-sm-6">
+                <h5 class="card-title">@Model.userName - @Model.userRole - @Model.job.InterviewDate</h5>
+            </div>
+
+            <div class="col-sm-8 text-right">
+
+                <form asp-action="Update" asp-controller="StoredProcedures" asp-route-id="@Model.job.Id" method="post">
+
+                    <div class="form-row">
+
+                        <label asp-for="@Model.job.InterviewDate" class="col-sm-1 col-form-label">Interview1</label>
+                        <div class="col-sm-3">
+                            <input asp-for="@Model.job.InterviewDate" class="form-control" />
+                        </div>
+
+                    </div>
+
+                    <span id="confirmDeleteSpan_@Model.job.Id" style="display:none">
+                        <span>Are you sure you want to Update?</span>
+                        <button type="submit" class="btn btn-danger btn-sm m-1">Yes</button>
+                        <a class="btn btn-primary btn-sm m-1"
+                           onclick="confirmDelete('@Model.job.Id', false)">No</a>
+                    </span>
+
+                    <span id="deleteSpan_@Model.job.Id" class="deleteSpan_@Model.job.Id">
+                        <a class="btn btn-danger btn-sm m-1"
+                           onclick="confirmDelete('@Model.job.Id', true)">Update</a>
+                    </span>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer small">
+        @Model.userName
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/CustomScript.js"></script>
+}

@@ -22,7 +22,7 @@ namespace JobSearchOrganizer
     public class Startup
     {
         private IConfiguration _config;
-        private readonly AppSettings appSettings;
+        //private readonly AppSettings appSettings;
 
         public Startup(IConfiguration config)
         {

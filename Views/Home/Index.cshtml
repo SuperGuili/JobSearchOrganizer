@@ -38,16 +38,22 @@
 </div>
 
 
-        <div class="small">
-            @foreach (var job in Model)
-            {
-                var annulRate = job.AnnualRate.ToString("C");
+      <div class="small">
+           @foreach (var job in Model)
+           {
+               var annulRate = job.AnnualRate.ToString("C");
+               var appliedDate = Convert.ToDateTime(job.AppliedDate).ToString("d");
+
+               if (appliedDate == "01/01/0001")
+               {
+                   appliedDate = "Not Applied";
+               }
 
                 <div class="card mt-1">
 
                     <div class="card-header">
                         <h4 style="float:left">@job.Company - @job.JobPosition</h4>
-                        <h4 style="float:right">Salary: @annulRate</h4>
+                        <h4 style="float:right"> @appliedDate - Salary: @annulRate</h4>
                     </div>
 
                     <div class="card-body row">
@@ -90,7 +96,7 @@
                     </div>
                 </div>
             }
-        </div>
+      </div>
 
 
 

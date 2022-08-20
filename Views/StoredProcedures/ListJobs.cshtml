@@ -1,0 +1,67 @@
+﻿@model IEnumerable<JobsListViewModel>
+
+@{ ViewBag.Title = "List of Jobs"; }
+
+<h1>List of Jobs</h1>
+
+@if (Model.Any())
+{
+@*<a asp-action="Register" asp-controller="Account" class="btn btn-primary btn-sm m-1" style="width:auto">
+    Add new User
+</a>*@ 
+    foreach (var item in Model)
+                {
+<div class="card m-1">
+    <div class="card-header small">
+        Job ID: @item.job.Id - @item.job.AnnualRate - @item.job.Company - @item.userName
+    </div>
+    <div class="card-body small">
+        <div class="form-row">
+            <div class="col-sm-6">
+                <h5 class="card-title">@item.job.AnnualRate - @item.job.Company - @item.job.InterviewDate</h5>
+            </div>
+
+            <div class="col-sm-6 text-right">
+                <form asp-action="Update" asp-controller="StoredProcedures"  asp-route-id="@item.job.Id" method="post">
+                    <a asp-action="Details" asp-controller="StoredProcedures" asp-route-id="@item.job.Id" asp-route-userName="@item.userName"
+                       class="btn btn-primary btn-sm m-1">Details</a>
+
+                    <span id="confirmDeleteSpan_@item.job.Id" style="display:none">
+                        <span>Are you sure you want to Update?</span>
+                        <button type="submit" class="btn btn-danger btn-sm m-1">Yes</button>
+                        <a class="btn btn-primary btn-sm m-1"
+                           onclick="confirmDelete('@item.job.Id', false)">No</a>
+                    </span>
+
+                    <span id="deleteSpan_@item.job.Id" class="deleteSpan_@item.job.Id">
+                        <a class="btn btn-danger btn-sm m-1"
+                           onclick="confirmDelete('@item.job.Id', true)">Update</a>
+                    </span>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> }
+            }
+            else
+            {
+<div class="card">
+    <div class="card-header">
+        No jobs created yet
+    </div>
+    <div class="card-body">
+        Use the button below to create new job
+    </div>
+    <div class="card-footer">
+        <a asp-action="Create" asp-controller="Home" class="btn btn-primary btn-sm m-1" style="width:auto">
+            Add new Job
+        </a>
+    </div>
+</div>}
+
+
+@section Scripts{
+
+    <script src="~/js/CustomScript.js"></script>
+
+}
