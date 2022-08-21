@@ -14,14 +14,11 @@ namespace JobSearchOrganizer.Controllers
     {
 
         private readonly IJobRepository _jobRepository;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public StoredProceduresController(RoleManager<IdentityRole> roleManager,
-            UserManager<ApplicationUser> userManager, IJobRepository jobRepository)
+        public StoredProceduresController(UserManager<ApplicationUser> userManager, IJobRepository jobRepository)
         {
             _jobRepository = jobRepository;
-            _roleManager = roleManager;
             _userManager = userManager;
         }
 
@@ -39,8 +36,7 @@ namespace JobSearchOrganizer.Controllers
 
                 JobsListViewModel model = new JobsListViewModel()
                 {
-                    job = job,
-                    userId = job.UserID,
+                    job = job,                    
                     userName = name
                 };
 
@@ -53,14 +49,20 @@ namespace JobSearchOrganizer.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int Id, string userName)
+        public async Task<IActionResult> Details(int Id)
         {
 
             Job job = null;
-            //var userId = _userManager.GetUserId(User);
-            //var userRole = _roleManager.Roles.FirstOrDefault();
-
             job = _jobRepository.GetJob(Id);
+            var user = await _userManager.FindByIdAsync(job.UserID);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with id: {job.UserID} cannot be found";
+                return View("NotFound");
+            }
+            // Method to return Role of the user by userID
+            var userRole = await _userManager.GetRolesAsync(user);
+
 
             if (job == null)
             {
@@ -70,10 +72,9 @@ namespace JobSearchOrganizer.Controllers
 
             JobsListViewModel model = new JobsListViewModel()
             {
-                job = job,
-                //userId = userId,
-                //userRole = userRole.ToString(),
-                userName = userName           
+                job = job,                
+                userRole = userRole.FirstOrDefault(),
+                userName = user.UserName           
             };
 
             return View(model);

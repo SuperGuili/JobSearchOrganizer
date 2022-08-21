@@ -10,8 +10,6 @@ namespace JobSearchOrganizer.ViewModels
     {
         public Job job { get; set; }
 
-        public string userId { get; set; }
-
         public string userName { get; set; }
 
         public string userRole { get; set; }

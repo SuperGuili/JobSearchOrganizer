@@ -6,9 +6,7 @@
 
 @if (Model.Any())
 {
-@*<a asp-action="Register" asp-controller="Account" class="btn btn-primary btn-sm m-1" style="width:auto">
-    Add new User
-</a>*@ 
+
     foreach (var item in Model)
                 {
 <div class="card m-1">
@@ -18,7 +16,7 @@
     <div class="card-body small">
         <div class="form-row">
             <div class="col-sm-6">
-                <h5 class="card-title">@item.job.AnnualRate - @item.job.Company - @item.job.InterviewDate</h5>
+                <h5 class="card-title">@item.job.Company - @item.job.Location - @item.job.InterviewDate</h5>
             </div>
 
             <div class="col-sm-6 text-right">

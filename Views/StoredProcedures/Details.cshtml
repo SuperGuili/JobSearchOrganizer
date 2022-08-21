@@ -1,23 +1,23 @@
 ﻿@model JobsListViewModel
 
 <div class="card m-1">
-    <div class="card-header small">
-        Job ID: @Model.job.Id - @Model.job.AnnualRate - @Model.job.Company - @Model.userName
+    <div class="card-header">
+        Job ID: @Model.job.Id - @Model.job.Company - @Model.job.AnnualRate - @Model.userName - @Model.userRole
     </div>
     <div class="card-body small">
         <div class="form-row">
             <div class="col-sm-6">
-                <h5 class="card-title">@Model.userName - @Model.userRole - @Model.job.InterviewDate</h5>
+                <h5 class="card-title">@Model.job.Company - @Model.job.Location - @Model.job.InterviewDate</h5>
             </div>
 
-            <div class="col-sm-8 text-right">
+            <div class="col-sm-6 text-right">
 
                 <form asp-action="Update" asp-controller="StoredProcedures" asp-route-id="@Model.job.Id" method="post">
 
                     <div class="form-row">
 
-                        <label asp-for="@Model.job.InterviewDate" class="col-sm-1 col-form-label">Interview1</label>
-                        <div class="col-sm-3">
+                        <label asp-for="@Model.job.InterviewDate" class="col-sm-2 form-label">Interview</label>
+                        <div class="col-sm-6">
                             <input asp-for="@Model.job.InterviewDate" class="form-control" />
                         </div>
 
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="card-footer small">
-        @Model.userName
+        User Name: @Model.userName
     </div>
 </div>
 @section Scripts{
